@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Button, Grid, Divider, Segment, GridColumn } from 'semantic-ui-react';
+import { Container, Header, Button, Grid, Divider, Segment, Icon } from 'semantic-ui-react';
 
 import { dummyData } from './tools';
 
@@ -42,7 +42,9 @@ class WritingAidMain extends React.Component {
                         />
                     </Grid.Column>
                 </Grid>
-                <Divider vertical>editor</Divider>
+                <Divider vertical>
+                    <Icon name='angle double right' size='big'></Icon>
+                </Divider>
             </Segment>
         )
     }
@@ -50,7 +52,7 @@ class WritingAidMain extends React.Component {
 
 export default WritingAidMain;
 
-const AvailableOptions = ({ data, onOptionClick, chosenData }) => {
+const AvailableOptions = ({ data, onOptionClick }) => {
 
     const availableOptions = data.map((d,i) => (
         <Container
@@ -61,6 +63,7 @@ const AvailableOptions = ({ data, onOptionClick, chosenData }) => {
                 option={d.possibleAnswers}
                 onOptionClick={onOptionClick}
                 id={d.id}
+                lastDividerHidden={data.length}
             />
         </Container>
     )
@@ -76,31 +79,28 @@ const AvailableOptions = ({ data, onOptionClick, chosenData }) => {
     )
 }
 
-const Option = ({ title, option, onOptionClick, id }) => {
-    
+const Option = ({ title, option, onOptionClick, id, lastDividerHidden }) => {
     const onClick = (option, title, id) => () => {
         onOptionClick(option, title, id )
     }
 
-    const options = option.map((option,index) => (
+    const options = option && option.map((option, index) => (
         <Container 
             key = {index}
             onClick = {onClick(option, title, id)}
         >
             <Container>
                 {option.option}
+                {option.selected &&
+                <Container>
+                    <Icon name='arrow alternate circle right' color='blue' />
+                </Container>
+                }
+                {index < lastDividerHidden &&
+                    <Divider horizontal>or</Divider>
+                }
             </Container>
-            {option.selected && 
-                <Button.Group>
-                    <Button icon='play' />
-                    <Button icon='pause' />
-                    <Button icon='shuffle' />
-                </Button.Group>
-            }
-
-            <Divider/>
         </Container>
-
     ))
     return (
         <div>
