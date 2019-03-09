@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
-import Testing from './components/AnswerSelecting' 
+import WritingAidMain from './components/AnswerSelecting' ;
+import "semantic-ui-css/semantic.min.css";
 
 class App extends Component {
   render() {
     return (
       <div>
-        <Testing/>
+        <WritingAidMain/>
       </div>
     );
   }
