@@ -14,15 +14,18 @@ class WritingAidMain extends React.Component {
         }
     }
 
-    onOptionClick = (d, t, i) => {
-        const chosenOption = {...this.state.chosenOption, id: d.id, option: d.option, title: t};
-        const selectedTitle = this.state.data.filter(data => data.id === i);
-        const selectedOption = selectedTitle[0].possibleAnswers.map( data => data.id === d.id ? {...data, selected: !data.selected} : data );
-        const chosenData = d.selected ? this.state.chosenData.filter(data => data.id !== d.id) : [...this.state.chosenData, chosenOption];
-        const data = this.state.data.map(data => data.id === i ? {...data, possibleAnswers: selectedOption} : data)
+    onTitleClick = (id) => {
+        const data = this.state.data.map(item => item.id === id ? {...item, expand: !item.expand} : item)
+        this.setState({ data })
+    }
 
+    onOptionClick = (d, t, i) => {
+        const chosenOption = {...this.state.chosenOption, id: d.id, option: d.option, title: t}; //the current selection
+        const selectedTitle = this.state.data.filter(data => data.id === i); //look for the title that contain the option users select, it will return an array with 1 item
+        const selectedOption = selectedTitle[0].possibleAnswers.map( data => data.id === d.id ? {...data, selected: !data.selected} : data ); //switching between select or non select an option
+        const chosenData = d.selected ? this.state.chosenData.filter(data => data.id !== d.id) : [...this.state.chosenData, chosenOption]; // create an array to render all options to text editor
+        const data = this.state.data.map(title => title.id === i ? {...title, possibleAnswers: selectedOption} : title); //replace the item in data that reflects the changes
         this.setState({ chosenData, data });
-        console.log(d.id)
     }
 
     render () {
@@ -34,11 +37,12 @@ class WritingAidMain extends React.Component {
                         <AvailableOptions
                             data={data}
                             onOptionClick={this.onOptionClick}
+                            onTitleClick={this.onTitleClick}
                         />
                     </Grid.Column>
                     <Grid.Column>
                         <TextRendering
-                            text = {chosenData ? chosenData : 'select your option'}
+                            text = {chosenData && chosenData}
                         />
                     </Grid.Column>
                 </Grid>
@@ -52,22 +56,38 @@ class WritingAidMain extends React.Component {
 
 export default WritingAidMain;
 
-const AvailableOptions = ({ data, onOptionClick }) => {
-
+const AvailableOptions = ({ data, onOptionClick, onTitleClick }) => {
+    const clickATitle = (id) => () => {
+        onTitleClick(id)
+    };
     const availableOptions = data.map((d,i) => (
-        <Container
-            key={i}
-        >
-            <Option
-                title = {d.title}
-                option={d.possibleAnswers}
-                onOptionClick={onOptionClick}
-                id={d.id}
-                lastDividerHidden={data.length}
-            />
-        </Container>
-    )
-    )
+        d.expand ? 
+            <Container
+                key={i}
+                onClick={clickATitle(d.id)}
+            >
+                <Option
+                    title={d.title}
+                    option={d.possibleAnswers}
+                    onOptionClick={onOptionClick}
+                    id={d.id}
+                />
+            </Container>
+            :
+            <Container
+                key={i}
+            >
+                <Header 
+                    as='h2'
+                    onClick={clickATitle(d.id)}
+                >
+                    {d.title}
+                    <Icon name='angle down' color='blue'/>
+                </Header>
+            </Container>
+        
+
+    ))
 
     return (
         <div>
@@ -79,24 +99,23 @@ const AvailableOptions = ({ data, onOptionClick }) => {
     )
 }
 
-const Option = ({ title, option, onOptionClick, id, lastDividerHidden }) => {
+const Option = ({ title, option, onOptionClick, id }) => {
     const onClick = (option, title, id) => () => {
         onOptionClick(option, title, id )
     }
-
-    const options = option && option.map((option, index) => (
+    const options = option && option.map((o, index) => (
         <Container 
             key = {index}
-            onClick = {onClick(option, title, id)}
+            onClick={onClick(o, title, id)}
         >
             <Container>
-                {option.option}
-                {option.selected &&
+                {o.option}
+                {o.selected &&
                 <Container>
                     <Icon name='arrow alternate circle right' color='blue' />
                 </Container>
                 }
-                {index < lastDividerHidden &&
+                {index < option.length-1 &&
                     <Divider horizontal>or</Divider>
                 }
             </Container>
@@ -105,7 +124,10 @@ const Option = ({ title, option, onOptionClick, id, lastDividerHidden }) => {
     return (
         <div>
             <Container>
-                <Header as='h2'>{title}</Header>
+                <Header as='h2'>
+                    {title}
+                    <Icon name='angle up' color='blue'/>
+                </Header>
                 {options}
             </Container>
         </div>
@@ -114,13 +136,13 @@ const Option = ({ title, option, onOptionClick, id, lastDividerHidden }) => {
 }
 
 const TextRendering = ({ text }) => {
-    const options = text ? text.map((t,i) => (
+    const options = text && text.map((t,i) => (
         <Container
             key={i}
         >
             <p>{t.option}</p>
         </Container>
-    )) : ''
+    ))
     return (
         <div>
             {options}
