@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Button, Grid, Divider, Segment, Icon } from 'semantic-ui-react';
+import { Container, Header, Grid, Divider, Segment, Icon, Sticky, Button, Popup } from 'semantic-ui-react';
 
 import { dummyData } from './tools';
 
@@ -15,66 +15,86 @@ class WritingAidMain extends React.Component {
     }
 
     onTitleClick = (id) => {
-        const data = this.state.data.map(item => item.id === id ? {...item, expand: !item.expand} : item)
+        const data = this.state.data.map(item => item.id === id ? {...item, collapse: !item.collapse} : item)
         this.setState({ data })
     }
 
     onOptionClick = (d, t, i) => {
+        const data = this.state.data.map(item => item.id === i ? 
+            {...item, possibleAnswers: item.possibleAnswers.map(i => i.id === d.id ? 
+                {...i, selected: !i.selected} : i)} : item)
         const chosenOption = {...this.state.chosenOption, id: d.id, option: d.option, title: t}; //the current selection
-        const selectedTitle = this.state.data.filter(data => data.id === i); //look for the title that contain the option users select, it will return an array with 1 item
-        const selectedOption = selectedTitle[0].possibleAnswers.map( data => data.id === d.id ? {...data, selected: !data.selected} : data ); //switching between select or non select an option
         const chosenData = d.selected ? this.state.chosenData.filter(data => data.id !== d.id) : [...this.state.chosenData, chosenOption]; // create an array to render all options to text editor
-        const data = this.state.data.map(title => title.id === i ? {...title, possibleAnswers: selectedOption} : title); //replace the item in data that reflects the changes
-        this.setState({ chosenData, data });
+        this.setState({data, chosenData})
     }
 
+    onEditOptionButtonClick = (id) => {
+        console.log(id)
+    }
+
+    onDeleteOptionButtonClick = (id, titleId) => {
+        const data = this.state.data.map(item => item.id === titleId ? {...item, possibleAnswers: item.possibleAnswers.filter(i => i.id !== id)} : item)
+        this.setState({ data }, () => {console.log('log of data from state', this.state.data[0].possibleAnswers)})
+        console.log('log of data from data',data[0].possibleAnswers)
+    }
+              
     render () {
         const { data, chosenData } = this.state;
         return (
-            <Segment>
-                <Grid columns={2} relaxed='very'>
-                    <Grid.Column>
-                        <AvailableOptions
-                            data={data}
-                            onOptionClick={this.onOptionClick}
-                            onTitleClick={this.onTitleClick}
-                        />
-                    </Grid.Column>
-                    <Grid.Column>
-                        <TextRendering
-                            text = {chosenData && chosenData}
-                        />
-                    </Grid.Column>
-                </Grid>
-                <Divider vertical>
-                    <Icon name='angle double right' size='big'></Icon>
-                </Divider>
-            </Segment>
+            <div>
+                <Segment>
+                    <Grid columns='equal'>
+                        <Grid.Column>
+                            <AvailableOptions
+                                data={data}
+                                onOptionClick={this.onOptionClick}
+                                onTitleClick={this.onTitleClick}
+                                onEditOptionButtonClick={this.onEditOptionButtonClick}
+                                onDeleteOptionButtonClick={this.onDeleteOptionButtonClick}
+                            />
+                        </Grid.Column>
+                        <Grid.Column width={10}>
+                            <Sticky>
+                                <TextRendering
+                                    text={chosenData && chosenData}
+                                />
+                            </Sticky>
+                        </Grid.Column>
+                    </Grid>
+
+                </Segment>
+            </div>   
         )
     }
 }
 
 export default WritingAidMain;
 
-const AvailableOptions = ({ data, onOptionClick, onTitleClick }) => {
+    // FIRST LAYER OF OPTION
+
+const AvailableOptions = ({ data, onOptionClick, onTitleClick, onDeleteOptionButtonClick, onEditOptionButtonClick }) => {
     const clickATitle = (id) => () => {
         onTitleClick(id)
     };
     const availableOptions = data.map((d,i) => (
-        d.expand ? 
+        d.collapse ? 
             <Container
                 key={i}
-                onClick={clickATitle(d.id)}
             >
-                <Option
-                    title={d.title}
-                    option={d.possibleAnswers}
-                    onOptionClick={onOptionClick}
-                    id={d.id}
-                />
+            <Option
+                title={d.title}
+                option={d.possibleAnswers}
+                onOptionClick={onOptionClick}
+                id={d.id}
+                onTitleClick={onTitleClick}
+                onDeleteClick={onDeleteOptionButtonClick}
+                onEditClick={onEditOptionButtonClick}
+            />
+
             </Container>
             :
             <Container
+                className='title'
                 key={i}
             >
                 <Header 
@@ -99,22 +119,41 @@ const AvailableOptions = ({ data, onOptionClick, onTitleClick }) => {
     )
 }
 
-const Option = ({ title, option, onOptionClick, id }) => {
-    const onClick = (option, title, id) => () => {
+
+    // OPTION RENDER
+
+const Option = ({ title, option, onOptionClick, id, onTitleClick, onDeleteClick, onEditClick }) => {
+    const clickATitle = (id) => () => {
+        onTitleClick(id)
+    };
+    const optionClick = (option, title, id) => () => {
         onOptionClick(option, title, id )
-    }
+    };
+    const onEdit = (id) => () => {
+        onEditClick(id)
+    };
+    const onDelete = (id, titleId) => () => {
+        onDeleteClick(id, titleId)
+    };
     const options = option && option.map((o, index) => (
         <Container 
+            className = 'option'
             key = {index}
-            onClick={onClick(o, title, id)}
+            onClick={optionClick(o, title, id)}
         >
+            <Container textAlign='right'>
+
+            </Container>
+
             <Container>
-                {o.option}
+                <Popup trigger={<p>{o.option}</p>} on='click' hideOnScroll>
+                    <Button.Group>
+                        <Popup trigger={<Button icon='edit' color='blue' onClick={onEdit(o.id)}/>} content='edit this option' />
+                        <Popup trigger={<Button icon='delete' color='red' onClick={onDelete(o.id, id)} />} content='delete this option' />
+                    </Button.Group> 
+                </Popup>
                 {o.selected &&
-                <Container>
-                    <Icon name='arrow alternate circle right' color='blue' />
-                </Container>
-                }
+                <Icon name='check' color='green' size='small' />}      
                 {index < option.length-1 &&
                     <Divider horizontal>or</Divider>
                 }
@@ -124,7 +163,10 @@ const Option = ({ title, option, onOptionClick, id }) => {
     return (
         <div>
             <Container>
-                <Header as='h2'>
+                <Header 
+                    as='h2'
+                    onClick={clickATitle(id)}
+                >
                     {title}
                     <Icon name='angle up' color='blue'/>
                 </Header>

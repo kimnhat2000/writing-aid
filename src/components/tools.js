@@ -5,32 +5,32 @@ export const dummyData = [
         title: 'title 1',
         possibleAnswers: [
             {
-                option:'Veniam proident elit ad Lorem fugiat. Dolor commodo duis adipisicing commodo irure id nulla consequat proident eu cillum excepteur ipsum enim. Id velit veniam Lorem reprehenderit cillum dolore amet ipsum occaecat ea sit. Fugiat proident cupidatat ad consectetur cupidatat. Occaecat in do minim fugiat sint est. Occaecat sunt culpa officia ex voluptate elit elit enim mollit culpa.',
+                option:'1 Veniam proident elit ad Lorem fugiat. Dolor commodo duis adipisicing commodo irure id nulla consequat proident eu cillum excepteur ipsum enim. Id velit veniam Lorem reprehenderit cillum dolore amet ipsum occaecat ea sit. Fugiat proident cupidatat ad consectetur cupidatat. Occaecat in do minim fugiat sint est. Occaecat sunt culpa officia ex voluptate elit elit enim mollit culpa.',
                 id: uuid(),
                 selected: false,
             },
             {
-                option: 'Non consectetur aliquip ea aliqua Lorem. Sunt quis id consequat commodo reprehenderit incididunt veniam laboris et nostrud ut magna non. Nisi eiusmod qui pariatur nisi elit nisi aliqua nulla eu sint anim.',
+                option: '2 Non consectetur aliquip ea aliqua Lorem. Sunt quis id consequat commodo reprehenderit incididunt veniam laboris et nostrud ut magna non. Nisi eiusmod qui pariatur nisi elit nisi aliqua nulla eu sint anim.',
                 id: uuid(),
                 selected: false, 
             },
             {
-                option: 'Lorem do eu amet aliquip. Est sunt sint mollit cillum adipisicing eu magna anim adipisicing voluptate est duis duis laboris. Non proident culpa voluptate qui id consectetur exercitation sint Lorem nulla voluptate nisi est. Ex ex enim labore consequat. Cupidatat mollit ipsum eiusmod elit tempor sunt nulla culpa Lorem mollit ipsum occaecat non.',
+                option: '3 Lorem do eu amet aliquip. Est sunt sint mollit cillum adipisicing eu magna anim adipisicing voluptate est duis duis laboris. Non proident culpa voluptate qui id consectetur exercitation sint Lorem nulla voluptate nisi est. Ex ex enim labore consequat. Cupidatat mollit ipsum eiusmod elit tempor sunt nulla culpa Lorem mollit ipsum occaecat non.',
                 id: uuid(),
                 selected: false,
             },
             {
-                option: 'Non consectetur aliquip ea aliqua Lorem. Sunt quis id consequat commodo reprehenderit incididunt veniam laboris et nostrud ut magna non. Nisi eiusmod qui pariatur nisi elit nisi aliqua nulla eu sint anim.',
+                option: '4 Non consectetur aliquip ea aliqua Lorem. Sunt quis id consequat commodo reprehenderit incididunt veniam laboris et nostrud ut magna non. Nisi eiusmod qui pariatur nisi elit nisi aliqua nulla eu sint anim.',
                 id: uuid(),
                 selected: false,
             },
             {
-                option: 'Lorem do eu amet aliquip. Est sunt sint mollit cillum adipisicing eu magna anim adipisicing voluptate est duis duis laboris. Non proident culpa voluptate qui id consectetur exercitation sint Lorem nulla voluptate nisi est. Ex ex enim labore consequat. Cupidatat mollit ipsum eiusmod elit tempor sunt nulla culpa Lorem mollit ipsum occaecat non.',
+                option: '5 Lorem do eu amet aliquip. Est sunt sint mollit cillum adipisicing eu magna anim adipisicing voluptate est duis duis laboris. Non proident culpa voluptate qui id consectetur exercitation sint Lorem nulla voluptate nisi est. Ex ex enim labore consequat. Cupidatat mollit ipsum eiusmod elit tempor sunt nulla culpa Lorem mollit ipsum occaecat non.',
                 id: uuid(),
                 selected: false,
             },  
         ],
-        expand: false,
+        collapse: false,
         id: uuid()
     },
     {
@@ -52,7 +52,7 @@ export const dummyData = [
                 selected: false,
             },
         ],
-        expand: false,
+        collapse: false,
         id: uuid()
     },
     {
@@ -74,7 +74,7 @@ export const dummyData = [
                 selected: false,
             },
         ],
-        expand: false,
+        collapse: false,
         id: uuid()
     },
 ]
