@@ -2,7 +2,7 @@ import uuid from 'uuid';
 
 export const dummyData = [
     {
-        title: 'title 1',
+        title: 'Occaecat sint aliquip tempor laborum.',
         createdBy: 'abc',
         icon: '',
         image: '',
@@ -38,11 +38,11 @@ export const dummyData = [
                 iconClicked: false
             },  
         ],
-        collapse: true,
+        collapse: false,
         id: uuid()
     },
     {
-        title: 'title 2',
+        title: 'Deserunt commodo Lorem aute esse.',
         createdBy: 'zyz',
         icon: '',
         image: '',
@@ -70,7 +70,7 @@ export const dummyData = [
         id: uuid()
     },
     {
-        title: 'title 3',
+        title: 'Esse exercitation sit incididunt in laborum esse excepteur reprehenderit.',
         createdBy: 'obc',
         icon: '',
         image: '',

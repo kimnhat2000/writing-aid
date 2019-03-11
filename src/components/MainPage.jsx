@@ -1,22 +1,32 @@
 import React from 'react';
-import { Container, Header, Grid, Icon, Segment, Breadcrumb } from 'semantic-ui-react';
+import { Container, Header, Grid, Icon, Segment, Breadcrumb, Search } from 'semantic-ui-react';
 import copy from 'copy-to-clipboard';
 
 import { dummyData } from './tools';
 import AvailableOptions from './Title';
 import TextEditor from './TextEditor';
+import AppForm from './Form';
 
 class WritingAidMain extends React.Component {
     constructor (props) {
         super (props);
         this.state = {
             data: dummyData,
+            onConfirmShow: false,
+            onConfirm: false,
+            onEditClick: false,
         }
     }
 
     onTitleClick = (id) => {
         const data = this.state.data.map(item => item.id === id ? {...item, collapse: !item.collapse} : item)
         this.setState({ data })
+    }
+
+    onDeleteTitleClick = (titleId) => {
+        const data = this.state.data.filter(item => item.id !== titleId);
+        this.setState({ data })
+        console.log(titleId, this.state.data)
     }
 
     onOptionClick = (d, i) => {
@@ -32,57 +42,70 @@ class WritingAidMain extends React.Component {
         const { data } = this.state
         const newData = data.map(item => item.id === titleId ? 
             {...item, possibleAnswers: item.possibleAnswers.map(unit => unit.id === option ? 
-                { ...unit, option: 'this option is edited'} : unit)} : item)
-        this.setState({ data: newData }, () => {console.log('edited option: ', data[0].possibleAnswers)})
+                { ...unit} : unit)} : item)
+        this.setState({ data: newData, onEditClick: !this.state.onEditClick }, () => {console.log('edited option: ', data[0].possibleAnswers)})
     }
 
-    onDeleteOptionButtonClick = (option, titleId) => {
-        const data = this.state.data.map(item => item.id === titleId ? { ...item, possibleAnswers: item.possibleAnswers.filter(i => i.id !== option)} : item)
-        this.setState({ data }, () => {console.log('log of data from state', this.state.data[0].possibleAnswers)})
+    onDeleteOptionButtonClick = (option) => {
+        this.setState({ onConfirmShow: true });
     }
-              
+
+    handleConfirm = (option, titleId) => {
+        const data = this.state.data.map(item => item.id === titleId ? { ...item, possibleAnswers: item.possibleAnswers.filter(i => i.id !== option)} : item)
+        this.setState({ data, onConfirmShow: false })
+    }
+
+    handleCancel = () => {
+        this.setState({ onConfirmShow: false })
+    }
+
     render () {
-        const { data } = this.state;
+        const { data, onConfirmShow, onEditClick } = this.state;
         return (
 
-                <Container>
-                    <Header as='h2' dividing>
-                        <Icon name='write' />
-                        <Header.Content>Improve Guarantee</Header.Content>
-                    </Header>
-                    <Grid columns='equal'>
-                        <Grid.Column>
+            <Container>
+                <Header as='h2' dividing>
+                    <Icon name='write' />
+                    <Header.Content>WRITING AID</Header.Content>
+                </Header>
+                <Grid columns='equal'>
+                    <Grid.Column>
+                        <Breadcrumb size='large'>
+                            <Breadcrumb.Section link>Puplic Area</Breadcrumb.Section>
+                            <Breadcrumb.Divider />
+                            <Breadcrumb.Section active>Sample Answers</Breadcrumb.Section>
+                            <Breadcrumb.Divider />
+                            <Breadcrumb.Section link>Templates</Breadcrumb.Section>
+                            <Breadcrumb.Divider />
+                            <Breadcrumb.Section link>my sinppets</Breadcrumb.Section>
+                            <Breadcrumb.Section link>anouncement</Breadcrumb.Section>
+                        </Breadcrumb>
 
-                            <Breadcrumb size='large'>
-                                <Breadcrumb.Section link>Puplic Area</Breadcrumb.Section>
-                                <Breadcrumb.Divider />
-                                <Breadcrumb.Section active>Sample Answers</Breadcrumb.Section>
-                                <Breadcrumb.Divider />
-                                <Breadcrumb.Section link>Templates</Breadcrumb.Section>
-                                <Breadcrumb.Divider />
-                                <Breadcrumb.Section link>my sinppets</Breadcrumb.Section>
-                                <Breadcrumb.Section link>anouncement</Breadcrumb.Section>
-                            </Breadcrumb>
+                        <Segment>
+                            <Search/>
+                            <AvailableOptions
+                                data={data}
+                                onOptionClick={this.onOptionClick}
+                                onTitleClick={this.onTitleClick}
+                                onDeleteTitleClick={this.onDeleteTitleClick}
+                                onEditOptionButtonClick={this.onEditOptionButtonClick}
+                                editButtonStatus={onEditClick}
+                                onDeleteOptionButtonClick={this.onDeleteOptionButtonClick}
+                                onConfirmShow={onConfirmShow}
+                                cancelButton={this.handleCancel}
+                                confirmButton={this.handleConfirm}
+                            />
+                        </Segment>
 
-                            <Segment>
-                                <AvailableOptions
-                                    data={data}
-                                    onOptionClick={this.onOptionClick}
-                                    onTitleClick={this.onTitleClick}
-                                    onEditOptionButtonClick={this.onEditOptionButtonClick}
-                                    onDeleteOptionButtonClick={this.onDeleteOptionButtonClick}
-                                />
-                            </Segment>
+                    </Grid.Column>
+                    <Grid.Column width={10}>
+                        {onEditClick ? 
+                            <AppForm /> : 
+                            <TextEditor />}
+                    </Grid.Column>
+                </Grid>
 
-
-                        </Grid.Column>
-                        <Grid.Column width={10}>
-                            <TextEditor/>
-                        </Grid.Column>
-                    </Grid>
-
-                </Container>
- 
+            </Container>
         )
     }
 }

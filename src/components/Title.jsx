@@ -1,28 +1,33 @@
 import React from 'react';
-import { Container, Popup, Icon } from 'semantic-ui-react';
+import { Container, Popup, Icon, Confirm, Divider } from 'semantic-ui-react';
 
 import Option from './Option';
 
 
-const AvailableOptions = ({ data, onOptionClick, onTitleClick, onDeleteOptionButtonClick, onEditOptionButtonClick }) => {
+const AvailableOptions = (props) => {
     const clickATitle = (id) => () => {
-        onTitleClick(id)
+        props.onTitleClick(id)
     };
-    const availableOptions = data.map((d,i) => (
+
+    const availableOptions = props.data.map((d,i) => (
         d.collapse ? 
             <Container
                 key={i}
             >
-            <Option
-                title={d.title}
-                option={d.possibleAnswers}
-                onOptionClick={onOptionClick}
-                id={d.id}
-                onTitleClick={onTitleClick}
-                onDeleteClick={onDeleteOptionButtonClick}
-                onEditClick={onEditOptionButtonClick}
-            />
-
+                <Option
+                    title={d.title}
+                    option={d.possibleAnswers}
+                    onOptionClick={props.onOptionClick}
+                    id={d.id}
+                    onTitleClick={props.onTitleClick}
+                    onDeleteClick={props.onDeleteOptionButtonClick}
+                    onEditClick={props.onEditOptionButtonClick}
+                    onConfirmShow={props.onConfirmShow}
+                    cancelButton={props.cancelButton}
+                    confirmButton={props.confirmButton}
+                    editButtonStatus={props.editButtonStatus}
+                    onDeleteTitleClick={props.onDeleteTitleClick}
+                />
             </Container>
             :
             <Container
@@ -30,12 +35,11 @@ const AvailableOptions = ({ data, onOptionClick, onTitleClick, onDeleteOptionBut
                 key={i}
             >
                 <h3 className='title'>
-                    {d.title}
-                   
+                    {d.title} 
                     <Popup trigger={<Icon name='angle double down' color='teal' onClick={clickATitle(d.id)}/>} content='open title' />
-                    <Popup trigger={<Icon name='edit' color='blue'/>} content='edit title' />
-                    <Popup trigger={<Icon name='delete' color='red'/>} content='delete title' />
                 </h3>
+
+                    <Divider horizontal>{i+1 + '/' + props.data.length}</Divider>  
             </Container>
     ))
 
