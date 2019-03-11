@@ -38,7 +38,7 @@ export const dummyData = [
                 iconClicked: false
             },  
         ],
-        collapse: false,
+        collapse: true,
         id: uuid()
     },
     {

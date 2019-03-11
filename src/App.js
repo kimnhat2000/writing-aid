@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import WritingAidMain from './components/AnswerSelecting' ;
+import WritingAidMain from './components/MainPage' ;
 import "semantic-ui-css/semantic.min.css";
 import './globalStyle.css';
 
