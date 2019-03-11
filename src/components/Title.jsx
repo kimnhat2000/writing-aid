@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Popup, Icon, Confirm, Divider } from 'semantic-ui-react';
+import { Container, Popup, Icon, Divider } from 'semantic-ui-react';
 
 import Option from './Option';
 
@@ -27,6 +27,8 @@ const AvailableOptions = (props) => {
                     confirmButton={props.confirmButton}
                     editButtonStatus={props.editButtonStatus}
                     onDeleteTitleClick={props.onDeleteTitleClick}
+                    handleDeleteTitleConfirm={props.handleDeleteTitleConfirm}
+                    onDeleteTitleShow={props.onDeleteTitleShow}
                 />
             </Container>
             :

@@ -13,6 +13,7 @@ class WritingAidMain extends React.Component {
         this.state = {
             data: dummyData,
             onConfirmShow: false,
+            onDeleteTitleShow: false,
             onConfirm: false,
             onEditClick: false,
         }
@@ -23,10 +24,14 @@ class WritingAidMain extends React.Component {
         this.setState({ data })
     }
 
-    onDeleteTitleClick = (titleId) => {
+    onDeleteTitleClick = () => {
+        this.setState({ onDeleteTitleShow:true })
+    }
+
+    handleDeleteTitleConfirm = (titleId) => {
         const data = this.state.data.filter(item => item.id !== titleId);
         this.setState({ data })
-        console.log(titleId, this.state.data)
+        console.log(titleId)
     }
 
     onOptionClick = (d, i) => {
@@ -46,7 +51,7 @@ class WritingAidMain extends React.Component {
         this.setState({ data: newData, onEditClick: !this.state.onEditClick }, () => {console.log('edited option: ', data[0].possibleAnswers)})
     }
 
-    onDeleteOptionButtonClick = (option) => {
+    onDeleteOptionButtonClick = () => {
         this.setState({ onConfirmShow: true });
     }
 
@@ -56,11 +61,11 @@ class WritingAidMain extends React.Component {
     }
 
     handleCancel = () => {
-        this.setState({ onConfirmShow: false })
+        this.setState({ onConfirmShow: false, onDeleteTitleShow: false })
     }
 
     render () {
-        const { data, onConfirmShow, onEditClick } = this.state;
+        const { data, onConfirmShow, onDeleteTitleShow, onEditClick } = this.state;
         return (
 
             <Container>
@@ -94,6 +99,10 @@ class WritingAidMain extends React.Component {
                                 onConfirmShow={onConfirmShow}
                                 cancelButton={this.handleCancel}
                                 confirmButton={this.handleConfirm}
+
+                                onDeleteTitleShow={onDeleteTitleShow}
+                                handleDeleteTitleConfirm={this.handleDeleteTitleConfirm}
+
                             />
                         </Segment>
 

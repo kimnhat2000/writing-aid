@@ -14,7 +14,9 @@ const Option = ({
     cancelButton,
     confirmButton,
     editButtonStatus,
-    onDeleteTitleClick
+    onDeleteTitleClick,
+    handleDeleteTitleConfirm,
+    onDeleteTitleShow
 }) => {
     const clickATitle = (id) => () => {
         onTitleClick(id)
@@ -36,9 +38,12 @@ const Option = ({
         console.log(option)
         confirmButton(option, titleId)
     }
-    const deleteTitleClick = (titleId) => () => {
-        onDeleteTitleClick(titleId)
+    const deleteTitleClick = () => {
+        onDeleteTitleClick()
     };
+    const onHandleDeleteTitleConfirm = (titleId) => () => {
+        handleDeleteTitleConfirm(titleId)
+    }
 
     const options = option && option.map((o, index) => (
         <Container
@@ -80,9 +85,19 @@ const Option = ({
                 <h3 className='title'>
                     {title}
                     <Popup trigger={<Icon name='angle double up' color='teal' onClick={clickATitle(id)} />} content='close title' />
-                    <Popup trigger={<Icon name='delete' color='red' onClick={deleteTitleClick(id)} />} content='delete title' />
+                    <Popup trigger={<Icon name='delete' color='red' onClick={deleteTitleClick} />} content='delete title' />
                 </h3>
                 {options}
+
+                <Confirm
+                    open={onDeleteTitleShow}
+                    content='are you sure you want to delete this title?'
+                    cancelButton='Never mind'
+                    confirmButton="Let's do it"
+                    onCancel={handleCancel}
+                    onConfirm={onHandleDeleteTitleConfirm(id)}
+                />
+
             </Container>
         </div>
 
