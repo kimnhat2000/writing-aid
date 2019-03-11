@@ -15,7 +15,7 @@ class WritingAidMain extends React.Component {
             onConfirmShow: false,
             onDeleteTitleShow: false,
             onConfirm: false,
-            onEditClick: false,
+            onEditClick: true,
         }
     }
 
@@ -31,7 +31,6 @@ class WritingAidMain extends React.Component {
     handleDeleteTitleConfirm = (titleId) => {
         const data = this.state.data.filter(item => item.id !== titleId);
         this.setState({ data })
-        console.log(titleId)
     }
 
     onOptionClick = (d, i) => {
@@ -71,7 +70,7 @@ class WritingAidMain extends React.Component {
             <Container>
                 <Header as='h2' dividing>
                     <Icon name='write' />
-                    <Header.Content>WRITING AID</Header.Content>
+                    <Header.Content>CS: GO</Header.Content>
                 </Header>
                 <Grid columns='equal'>
                     <Grid.Column>
@@ -109,7 +108,9 @@ class WritingAidMain extends React.Component {
                     </Grid.Column>
                     <Grid.Column width={10}>
                         {onEditClick ? 
-                            <AppForm /> : 
+                            <AppForm 
+
+                            /> : 
                             <TextEditor />}
                     </Grid.Column>
                 </Grid>

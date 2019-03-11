@@ -1,48 +1,45 @@
-import React from 'react'
-import { Form } from 'semantic-ui-react'
+import React from 'react';
+import { Form, Icon, Popup, Container, Input } from 'semantic-ui-react';
+import uuid from 'uuid';
 
-const options = [
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-]
 
 class AppForm extends React.Component {
-  state = {}
+  state = {
+    fuzzyTitles: [],
+    answer:'',
+    inputValue:''
+  }
 
-  handleChange = (e, { value }) => this.setState({ value })
+  addFuzzyTitle = () => {
+    this.setState({ fuzzyTitles: [...this.state.fuzzyTitles, {id: uuid()}] });
+  }
+
+  removeFuzzyTitle = (titleId) => {
+    const fuzzyTitles = this.state.fuzzyTitles.filter(title => title.id !== titleId)
+    this.setState({ fuzzyTitles })
+  }
+
+  onInputValueChange = (e) => {
+    this.setState({ inputValue: e.target.value })
+  }
 
   render() {
-    const { value } = this.state
+
+    const fuzzyTitles = this.state.fuzzyTitles && this.state.fuzzyTitles.map((title, index) => (
+      <Container key = {index}>
+        <Input icon={<Icon name='minus' inverted circular link onClick={() => this.removeFuzzyTitle(title.id)}/>} fluid label={`match search ${index + 1} / ${this.state.fuzzyTitles.length}`} placeholder='title...' 
+          value={this.state.inputValue}
+          onChange={this.onInputValueChange()}
+        />
+      </Container>
+    ))
     return (
       <Form>
-        <Form.Group widths='equal'>
-          <Form.Input fluid label='First name' placeholder='First name' />
-          <Form.Input fluid label='Last name' placeholder='Last name' />
-          <Form.Select fluid label='Gender' options={options} placeholder='Gender' />
-        </Form.Group>
-        <Form.Group inline>
-          <label>Size</label>
-          <Form.Radio
-            label='Small'
-            value='sm'
-            checked={value === 'sm'}
-            onChange={this.handleChange}
-          />
-          <Form.Radio
-            label='Medium'
-            value='md'
-            checked={value === 'md'}
-            onChange={this.handleChange}
-          />
-          <Form.Radio
-            label='Large'
-            value='lg'
-            checked={value === 'lg'}
-            onChange={this.handleChange}
-          />
-        </Form.Group>
-        <Form.TextArea label='About' placeholder='what is the best way to respond to tough questions?...' />
-        <Form.Checkbox label='I agree to the Terms and Conditions' />
+          <Form.Input fluid label='Title' placeholder='title...' /> 
+          <Popup trigger={<Icon name='plus' onClick={this.addFuzzyTitle} link/>} content='add fuzzy search' />
+          {fuzzyTitles}
+        <Form.TextArea label='Suitable answer to this question' placeholder='what is the best way to respond to questions?...' />
+
         <Form.Button>Submit</Form.Button>
       </Form>
     )

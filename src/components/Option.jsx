@@ -82,11 +82,11 @@ const Option = ({
         <div>
             <Container
             >
-                <h3 className='title'>
+                <h4 className='title'>
                     {title}
                     <Popup trigger={<Icon name='angle double up' color='teal' onClick={clickATitle(id)} />} content='close title' />
                     <Popup trigger={<Icon name='delete' color='red' onClick={deleteTitleClick} />} content='delete title' />
-                </h3>
+                </h4>
                 {options}
 
                 <Confirm

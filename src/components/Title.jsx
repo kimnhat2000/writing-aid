@@ -36,10 +36,10 @@ const AvailableOptions = (props) => {
                 className='title'
                 key={i}
             >
-                <h3 className='title'>
+                <h4 className='title'>
                     {d.title} 
                     <Popup trigger={<Icon name='angle double down' color='teal' onClick={clickATitle(d.id)}/>} content='open title' />
-                </h3>
+                </h4>
 
                     <Divider horizontal>{i+1 + '/' + props.data.length}</Divider>  
             </Container>
