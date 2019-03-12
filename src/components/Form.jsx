@@ -7,11 +7,10 @@ class AppForm extends React.Component {
   state = {
     fuzzyTitles: [],
     answer:'',
-    inputValue:''
   }
 
   addFuzzyTitle = () => {
-    this.setState({ fuzzyTitles: [...this.state.fuzzyTitles, {id: uuid()}] });
+    this.setState({ fuzzyTitles: [...this.state.fuzzyTitles, {id: uuid(), value:''}] });
   }
 
   removeFuzzyTitle = (titleId) => {
@@ -20,19 +19,25 @@ class AppForm extends React.Component {
   }
 
   onInputValueChange = (e) => {
-    this.setState({ inputValue: e.target.value })
+    const id = Number(e.target.id);
+    const fuzzyTitles = this.state.fuzzyTitles.map((value, index) => index === id ? {...value, value: e.target.value} : value)
+    this.setState({ fuzzyTitles })
+    console.log(this.state.fuzzyTitles)
   }
 
   render() {
 
-    const fuzzyTitles = this.state.fuzzyTitles && this.state.fuzzyTitles.map((title, index) => (
+    const fuzzyTitles = this.state.fuzzyTitles && this.state.fuzzyTitles.map((title, index) => {
+      return(
       <Container key = {index}>
         <Input icon={<Icon name='minus' inverted circular link onClick={() => this.removeFuzzyTitle(title.id)}/>} fluid label={`match search ${index + 1} / ${this.state.fuzzyTitles.length}`} placeholder='title...' 
-          value={this.state.inputValue}
-          onChange={this.onInputValueChange()}
+          id={index}
+          type='text'
+          value={title.value}
+          onChange={this.onInputValueChange}
         />
       </Container>
-    ))
+    )})
     return (
       <Form>
           <Form.Input fluid label='Title' placeholder='title...' /> 
