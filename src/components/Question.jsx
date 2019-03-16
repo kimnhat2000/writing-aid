@@ -10,4 +10,4 @@ const QuestionRender = () =>
         </Button.Content>
     </Button>
 
-export default QuestionRender
+export default QuestionRender;

@@ -1,5 +1,7 @@
 import React from 'react';
-import { TextArea, Form } from 'semantic-ui-react';
+import { TextArea, Form, Container } from 'semantic-ui-react';
+
+import Timer from './Timer';
 
 class TextEditor extends React.Component {
     constructor (props) {
@@ -15,10 +17,18 @@ class TextEditor extends React.Component {
 
     render () {
         const { selectedContent } = this.state;
+        const { onTimerClick, startTimer } = this.props;
+
         return(
-            <Form>
-                <TextArea autoHeight placeholder='start writing here' style={{ minHeight: 500 }} value={selectedContent} onChange={this.onContentChange}/>
-            </Form>
+            <Container>
+                <Form>
+                    <TextArea autoHeight placeholder='start writing here' style={{ minHeight: 500 }} value={selectedContent} onChange={this.onContentChange} />
+                </Form>
+                <Timer
+                    onTimerClick={onTimerClick}
+                    startTimer={startTimer}
+                />
+            </Container> 
         )
     }
 }

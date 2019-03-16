@@ -6,11 +6,11 @@ const FunctionMenu = ({ activeItem, menuItem }) => {
 
     const handleItemClick = (e, { name }) => {activeItem(name)}
 
-    const dropdown = menuItem.map((item, index) => (
+    const dropdown = menuItem && menuItem.map((item, index) => (
         <Dropdown.Item key={index} name={item} onClick={handleItemClick}>{item}</Dropdown.Item>
     ))
     return (
-        <Menu secondary>{activeItem}
+        <Menu secondary stackable>
             <Dropdown item icon='wrench'>
                 <Dropdown.Menu>
                     {dropdown}

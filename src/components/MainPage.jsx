@@ -21,11 +21,12 @@ class WritingAidMain extends React.Component {
             onDeleteTitleShow: false,
             onConfirm: false,
             onFormOpen: false,
-            activeItem: 'home',
+            activeItem: 'responses',
             menuItem:[
                 'public', 'responses', 'snippet', 'Database', 'statistic'
             ],
             questionExpansion: false,
+            timerClick: false,
         }
     }
 
@@ -73,13 +74,13 @@ class WritingAidMain extends React.Component {
         this.setState({ onConfirmShow: false, onDeleteTitleShow: false })
     }
 
-    onMenuItemClick = (menuItem) => {
-        this.setState({ activeItem: menuItem})
-        console.log(menuItem)
+    onMenuItemClick = (item) => {
+        this.setState({ activeItem: item})
+        console.log(item)
     }
 
     render () {
-        const { data, onConfirmShow, onDeleteTitleShow, onFormOpen, activeItem, menuItem } = this.state;
+        const { data, onConfirmShow, onDeleteTitleShow, onFormOpen, activeItem, menuItem, timerClick } = this.state;
         return (
 
             <Container>
@@ -126,7 +127,10 @@ class WritingAidMain extends React.Component {
                             <AppForm 
 
                             /> : 
-                            <TextEditor />}
+                            <TextEditor 
+                                onTimerClick={()=>this.setState({timerClick: !timerClick})}
+                                startTimer={timerClick}
+                            />}
                     </Grid.Column>
                 </Grid>
 
