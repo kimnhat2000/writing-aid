@@ -20,11 +20,12 @@ class WritingAidMain extends React.Component {
             onConfirmShow: false,
             onDeleteTitleShow: false,
             onConfirm: false,
-            onFormOpen: true,
+            onFormOpen: false,
             activeComponent: 'responses',
             mainMenuItem: mainDropdownMenu,
             questionExpansion: false,
             timerClick: false,
+            optionToEdit:{}
         }
     }
 
@@ -35,7 +36,7 @@ class WritingAidMain extends React.Component {
 
     handleDeleteTitleConfirm = (titleId) => {
         const data = this.state.data.filter(item => item.id !== titleId);
-        this.setState({ data })
+        this.setState({ data, onDeleteTitleShow: false })
     }
 
     onOptionClick = (d, i) => {
@@ -44,24 +45,29 @@ class WritingAidMain extends React.Component {
                 {...i, selected: !i.selected} : {...i, selected: false})} : 
                 {...item, possibleAnswers: item.possibleAnswers.map(unit=>({...unit, selected: false}))})
         copy(d.option)
-        this.setState({data})
+        this.setState({data, onFormOpen: false})
     }
 
     onEditOptionButtonClick = (option, titleId) => {
-        const { data } = this.state
-        const newData = data.map(item => item.id === titleId ? 
-            {...item, possibleAnswers: item.possibleAnswers.map(unit => unit.id === option ? 
-                { ...unit} : unit)} : item)
-        this.setState({ data: newData, onFormOpen: !this.state.onFormOpen }, () => {console.log('edited option: ', data[0].possibleAnswers)})
+        const { data, onFormOpen } = this.state
+        const filterTitleContentsOption = data.filter(title => title.id === titleId)
+        const optionToEdit = filterTitleContentsOption[0].possibleAnswers.filter(option => option.selected === true)
+        this.setState({ 
+            onFormOpen: !onFormOpen, 
+            optionToEdit: { ...optionToEdit[0], 
+                title:filterTitleContentsOption[0].title,
+                possibleMatch: filterTitleContentsOption[0].possibleMatch
+            }
+        })
     }
 
     handleConfirm = (option, titleId) => {
         const data = this.state.data.map(item => item.id === titleId ? { ...item, possibleAnswers: item.possibleAnswers.filter(i => i.id !== option)} : item)
-        this.setState({ data, onConfirmShow: false })
+        this.setState({ data, onConfirmShow: false, onDeleteTitleShow: false })
     }
     
     render () {
-        const { data, onConfirmShow, onDeleteTitleShow, onFormOpen, activeComponent, mainMenuItem, timerClick, questionExpansion } = this.state;
+        const { data, onConfirmShow, onDeleteTitleShow, onFormOpen, activeComponent, mainMenuItem, timerClick, questionExpansion, optionToEdit } = this.state;
         return (
 
             <Container>
@@ -76,29 +82,28 @@ class WritingAidMain extends React.Component {
                                 activeComponent={(name)=>this.setState({ activeComponent: name })}
                                 menuItems={mainMenuItem}
                                 shownComponentName={this.state.activeComponent}
+                                expandTitles={() => this.setState({ data: data.map(data => ({ ...data, collapse: true}))})}
+                                collapseTitles={() => this.setState({ data: data.map(data => ({ ...data, collapse: false}))})}
+                                addTitles={() => this.setState({ onFormOpen: true, optionToEdit: {} })}
                             />
 
                             {activeComponent === mainMenuItem[0] &&
                             <Test/>
                             }
-
                             <AvailableOptions
                                 data={data}
                                 onOptionClick={this.onOptionClick}
                                 onTitleClick={this.onTitleClick}
                                 onDeleteTitleClick={() => this.setState({ onDeleteTitleShow: true })}
                                 onEditOptionButtonClick={this.onEditOptionButtonClick}
-                                editButtonStatus={onFormOpen}
+                                editOptionButtonStatus={onFormOpen}
                                 onDeleteOptionButtonClick={() => this.setState({ onConfirmShow: true })}
                                 onConfirmShow={onConfirmShow}
                                 cancelButton={() => this.setState({ onConfirmShow: false, onDeleteTitleShow: false })}
                                 confirmButton={this.handleConfirm}
                                 onDeleteTitleShow={onDeleteTitleShow}
                                 handleDeleteTitleConfirm={this.handleDeleteTitleConfirm}
-                            />
-
-                            
-
+                            />                          
                         </Segment>
                         <QuestionRender 
                             questionExpansionClick={()=>this.setState({ questionExpansion: !questionExpansion })}
@@ -109,6 +114,8 @@ class WritingAidMain extends React.Component {
                         {onFormOpen ? 
                             <AppForm
                                 onFormOpen={() => this.setState({ onFormOpen: false })} 
+                                onAddtitle={(newTitle) => this.setState({ data: [newTitle, ...data]}, ()=> console.log(data))}
+                                optionToEdit={optionToEdit}
                             /> : 
                             <TextEditor 
                                 onTimerClick={()=>this.setState({timerClick: !timerClick})}

@@ -6,14 +6,32 @@ import uuid from 'uuid';
 class AppForm extends React.Component {
   constructor(props){
     super(props);
+    const { optionToEdit } = this.props
     this.state = {
-      possibleMatch: [],
+      possibleMatch: optionToEdit.possibleMatch ? optionToEdit.possibleMatch : [],
       answer:'',
-      title:'',
-      content:'',
+      title: optionToEdit.title ? optionToEdit.title : '',
+      content: optionToEdit.option ? optionToEdit.option : '',
       submitCheck: true,
       newTopic:{},
+      cancelSubmit: false,
     }
+  }
+
+  componentDidUpdate(prevProps){
+    if (this.props.optionToEdit !== prevProps.optionToEdit){
+      this.setState(
+        {
+          possibleMatch: [],
+          answer: '',
+          title: '',
+          content: '',
+          submitCheck: true,
+          newTopic: {},
+          cancelSubmit: false,
+        }
+      )
+  }
   }
 
   addFuzzyTitle = () => {
@@ -28,12 +46,12 @@ class AppForm extends React.Component {
   }
 
   onTitleInput = (e) => {
-    this.setState({ title: e.target.value }, this.state.title === '' || this.state.content === '' ? this.setState({submitCheck: true}) : this.setState({submitCheck: false}))
+    this.setState({ title: e.target.value }, ()=> this.state.title === '' || this.state.content === '' ? this.setState({submitCheck: true}) : this.setState({submitCheck: false}))
     
   }
 
   onContentInput = (e) => {
-    this.setState({ content: e.target.value }, this.state.title === '' || this.state.content === '' ? this.setState({ submitCheck: true }) : this.setState({ submitCheck: false }))
+    this.setState({ content: e.target.value }, ()=> this.state.content === '' || this.state.title === '' ? this.setState({ submitCheck: true }) : this.setState({ submitCheck: false }))
   }
 
   onMatchSearchInput = (e) => {
@@ -43,10 +61,13 @@ class AppForm extends React.Component {
   }
 
   onFormSubmit = (e) => {
-    const { title, content, possibleMatch } = this.state;
-    const { onFormOpen } = this.props;
+    const { title, content, possibleMatch, cancelSubmit } = this.state;
+    const { onFormOpen, onAddtitle } = this.props;
     e.preventDefault()
-    if (!title) {
+    if (cancelSubmit) {
+      onFormOpen()
+      return;
+    }else if (!title) {
       return;
     } else if (!content) {
       return;
@@ -69,16 +90,15 @@ class AppForm extends React.Component {
         collapse: false,
         id: uuid()
       };
-      this.setState({ newTopic, submitCheck: false }, ()=>{
-        console.log(this.state.newTopic); onFormOpen();
-      });
-
+      this.setState({ submitCheck: false })
+        onFormOpen();
+        onAddtitle(newTopic);
     }
   }
 
   render() {
 
-    const { title, content, submitCheck, possibleMatch} = this.state
+    const { title, content, submitCheck, possibleMatch } = this.state
 
     const possibleMatches = possibleMatch && possibleMatch.map((item, index) => {
       return(
@@ -122,7 +142,7 @@ class AppForm extends React.Component {
             <Button color='blue'>Submit</Button>
           }
           <Button.Or />
-          <Button onClick={() => { this.props.onFormOpen() }} color='red'>Cancel</Button>
+          <Button onClick={() => this.setState({cancelSubmit: true})} color='red'>Cancel</Button>
         </Button.Group>
       </Form>
     )

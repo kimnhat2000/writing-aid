@@ -77,7 +77,7 @@ class Timer extends React.Component{
         :
         <Popup 
             trigger={
-                <Button icon floated='right' onClick={() => onTimerClick()} >
+                <Button icon floated='right' onClick={() => {onTimerClick(); this.startCounting(); this.setState({start: true})}} >
                     <Icon className='icon' name='stopwatch' />
                 </Button>} 
             content='start stopwatch' 

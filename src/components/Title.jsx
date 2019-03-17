@@ -19,14 +19,14 @@ const AvailableOptions = (props) => {
                     title={d.title}
                     option={d.possibleAnswers}
                     onOptionClick={props.onOptionClick}
-                    id={d.id}
+                    titleId={d.id}
                     onTitleClick={props.onTitleClick}
                     onDeleteClick={props.onDeleteOptionButtonClick}
-                    onEditClick={props.onEditOptionButtonClick}
+                    onEditOptionButtonClick={props.onEditOptionButtonClick}
                     onConfirmShow={props.onConfirmShow}
                     cancelButton={props.cancelButton}
                     confirmButton={props.confirmButton}
-                    editButtonStatus={props.editButtonStatus}
+                    editOptionButtonStatus={props.editOptionButtonStatus}
                     onDeleteTitleClick={props.onDeleteTitleClick}
                     handleDeleteTitleConfirm={props.handleDeleteTitleConfirm}
                     onDeleteTitleShow={props.onDeleteTitleShow}
