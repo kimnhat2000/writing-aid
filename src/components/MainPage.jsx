@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Header, Grid, Icon, Segment } from 'semantic-ui-react';
 import copy from 'copy-to-clipboard';
 
-import { dummyData } from './tools';
+import { dummyData, mainDropdownMenu } from './tools';
 import AvailableOptions from './Title';
 import TextEditor from './TextEditor';
 import AppForm from './Form';
@@ -20,11 +20,9 @@ class WritingAidMain extends React.Component {
             onConfirmShow: false,
             onDeleteTitleShow: false,
             onConfirm: false,
-            onFormOpen: false,
-            activeItem: 'responses',
-            menuItem:[
-                'public', 'responses', 'snippet', 'Database', 'statistic'
-            ],
+            onFormOpen: true,
+            activeComponent: 'responses',
+            mainMenuItem: mainDropdownMenu,
             questionExpansion: false,
             timerClick: false,
         }
@@ -33,10 +31,6 @@ class WritingAidMain extends React.Component {
     onTitleClick = (id) => {
         const data = this.state.data.map(item => item.id === id ? {...item, collapse: !item.collapse} : item)
         this.setState({ data })
-    }
-
-    onDeleteTitleClick = () => {
-        this.setState({ onDeleteTitleShow:true })
     }
 
     handleDeleteTitleConfirm = (titleId) => {
@@ -61,26 +55,13 @@ class WritingAidMain extends React.Component {
         this.setState({ data: newData, onFormOpen: !this.state.onFormOpen }, () => {console.log('edited option: ', data[0].possibleAnswers)})
     }
 
-    onDeleteOptionButtonClick = () => {
-        this.setState({ onConfirmShow: true });
-    }
-
     handleConfirm = (option, titleId) => {
         const data = this.state.data.map(item => item.id === titleId ? { ...item, possibleAnswers: item.possibleAnswers.filter(i => i.id !== option)} : item)
         this.setState({ data, onConfirmShow: false })
     }
-
-    handleCancel = () => {
-        this.setState({ onConfirmShow: false, onDeleteTitleShow: false })
-    }
-
-    onMenuItemClick = (item) => {
-        this.setState({ activeItem: item})
-        console.log(item)
-    }
-
+    
     render () {
-        const { data, onConfirmShow, onDeleteTitleShow, onFormOpen, activeItem, menuItem, timerClick } = this.state;
+        const { data, onConfirmShow, onDeleteTitleShow, onFormOpen, activeComponent, mainMenuItem, timerClick, questionExpansion } = this.state;
         return (
 
             <Container>
@@ -92,11 +73,12 @@ class WritingAidMain extends React.Component {
                     <Grid.Column>
                         <Segment>
                             <FunctionMenu
-                                activeItem={this.onMenuItemClick}
-                                menuItem={menuItem}
+                                activeComponent={(name)=>this.setState({ activeComponent: name })}
+                                menuItems={mainMenuItem}
+                                shownComponentName={this.state.activeComponent}
                             />
 
-                            {activeItem === menuItem[0] &&
+                            {activeComponent === mainMenuItem[0] &&
                             <Test/>
                             }
 
@@ -104,28 +86,29 @@ class WritingAidMain extends React.Component {
                                 data={data}
                                 onOptionClick={this.onOptionClick}
                                 onTitleClick={this.onTitleClick}
-                                onDeleteTitleClick={this.onDeleteTitleClick}
+                                onDeleteTitleClick={() => this.setState({ onDeleteTitleShow: true })}
                                 onEditOptionButtonClick={this.onEditOptionButtonClick}
                                 editButtonStatus={onFormOpen}
-                                onDeleteOptionButtonClick={this.onDeleteOptionButtonClick}
+                                onDeleteOptionButtonClick={() => this.setState({ onConfirmShow: true })}
                                 onConfirmShow={onConfirmShow}
-                                cancelButton={this.handleCancel}
+                                cancelButton={() => this.setState({ onConfirmShow: false, onDeleteTitleShow: false })}
                                 confirmButton={this.handleConfirm}
-
                                 onDeleteTitleShow={onDeleteTitleShow}
                                 handleDeleteTitleConfirm={this.handleDeleteTitleConfirm}
-
                             />
 
                             
 
                         </Segment>
-                        <QuestionRender />
+                        <QuestionRender 
+                            questionExpansionClick={()=>this.setState({ questionExpansion: !questionExpansion })}
+                            questionExpansion={questionExpansion}
+                        />
                     </Grid.Column>
                     <Grid.Column width={10}>
                         {onFormOpen ? 
-                            <AppForm 
-
+                            <AppForm
+                                onFormOpen={() => this.setState({ onFormOpen: false })} 
                             /> : 
                             <TextEditor 
                                 onTimerClick={()=>this.setState({timerClick: !timerClick})}

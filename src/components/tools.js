@@ -101,3 +101,6 @@ export const dummyData = [
         id: uuid()
     },
 ]
+export const mainDropdownMenu = [
+    'public', 'responses', 'snippet', 'Database', 'statistic'
+]

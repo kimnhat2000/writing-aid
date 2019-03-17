@@ -12,6 +12,7 @@ const AvailableOptions = (props) => {
     const availableOptions = props.data.map((d,i) => (
         d.collapse ? 
             <Container
+                fluid
                 key={i}
             >
                 <Option

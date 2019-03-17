@@ -22,7 +22,7 @@ class TextEditor extends React.Component {
         return(
             <Container>
                 <Form>
-                    <TextArea autoHeight placeholder='start writing here' style={{ minHeight: 500 }} value={selectedContent} onChange={this.onContentChange} />
+                    <TextArea placeholder='start writing here' style={{ minHeight: 550 }} value={selectedContent} onChange={this.onContentChange} />
                 </Form>
                 <Timer
                     onTimerClick={onTimerClick}
