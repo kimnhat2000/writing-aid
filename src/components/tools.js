@@ -147,7 +147,8 @@ export const mainDropdownMenu = [
   'Snippet',
   'Drafts',
   'Database',
-  'statistic'
+  'statistic',
+  'logout',
 ]
 
 export const textEditorDropdownMenu = [

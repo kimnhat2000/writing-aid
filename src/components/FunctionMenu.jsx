@@ -38,21 +38,16 @@ const FunctionMenu = ({
                 Add a title
               </Dropdown.Item>
               <Dropdown.Item>
-                <MySearch searchData={searchData}
-                foundDataBeingSentBack={foundDataBeingSentBack
-} />
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => expandTitles()}>
-                Show all toipcs
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => expandTitles()}>
-                Hide all topics
+                <MySearch
+                  searchData={searchData}
+                  foundDataBeingSentBack={foundDataBeingSentBack}
+                />
               </Dropdown.Item>
               <Dropdown.Item onClick={() => expandTitles()}>
                 Expand all tittles
               </Dropdown.Item>
               <Dropdown.Item onClick={() => collapseTitles()}>
-                Collapse all titles{' '}
+                Collapse all titles
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>

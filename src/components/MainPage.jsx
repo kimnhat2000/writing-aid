@@ -190,20 +190,23 @@ class WritingAidMain extends React.Component {
                 expandTitles={() =>
                   this.setState({
                     data: data.map(data => ({ ...data, collapse: true })),
-                    dataRenderedAfterSearch: dataRenderedAfterSearch.map(
-                      data => ({ ...data, collapse: true })
-                    )
+                    dataRenderedAfterSearch:
+                      dataRenderedAfterSearch &&
+                      dataRenderedAfterSearch.map(data => ({
+                        ...data,
+                        collapse: true
+                      }))
                   })
                 }
                 collapseTitles={() =>
                   this.setState({
                     data: data.map(data => ({ ...data, collapse: false })),
-                    dataRenderedAfterSearch: dataRenderedAfterSearch.map(
-                      data => ({
+                    dataRenderedAfterSearch:
+                      dataRenderedAfterSearch &&
+                      dataRenderedAfterSearch.map(data => ({
                         ...data,
                         collapse: false
-                      })
-                    )
+                      }))
                   })
                 }
                 addTitles={() =>
@@ -214,35 +217,36 @@ class WritingAidMain extends React.Component {
               />
 
               {activeComponent === 'Public' && <Test />}
-              
-              {activeComponent === 'Responses' &&
-              <AvailableOptions
-                data={
-                  dataRenderedAfterSearch.length >= 1
-                    ? dataRenderedAfterSearch
-                    : data
-                }
-                onOptionClick={this.onOptionClick}
-                onTitleClick={this.onTitleClick}
-                onDeleteTitleClick={() =>
-                  this.setState({ onDeleteTitleShow: true })
-                }
-                onEditOptionButtonClick={this.onEditOptionButtonClick}
-                editOptionButtonStatus={onFormOpen}
-                onDeleteOptionButtonClick={() =>
-                  this.setState({ onConfirmShow: true })
-                }
-                onConfirmShow={onConfirmShow}
-                cancelButton={() =>
-                  this.setState({
-                    onConfirmShow: false,
-                    onDeleteTitleShow: false
-                  })
-                }
-                confirmButton={this.handleConfirm}
-                onDeleteTitleShow={onDeleteTitleShow}
-                handleDeleteTitleConfirm={this.handleDeleteTitleConfirm}
-              />}
+
+              {activeComponent === 'Responses' && (
+                <AvailableOptions
+                  data={
+                    dataRenderedAfterSearch.length >= 1
+                      ? dataRenderedAfterSearch
+                      : data
+                  }
+                  onOptionClick={this.onOptionClick}
+                  onTitleClick={this.onTitleClick}
+                  onDeleteTitleClick={() =>
+                    this.setState({ onDeleteTitleShow: true })
+                  }
+                  onEditOptionButtonClick={this.onEditOptionButtonClick}
+                  editOptionButtonStatus={onFormOpen}
+                  onDeleteOptionButtonClick={() =>
+                    this.setState({ onConfirmShow: true })
+                  }
+                  onConfirmShow={onConfirmShow}
+                  cancelButton={() =>
+                    this.setState({
+                      onConfirmShow: false,
+                      onDeleteTitleShow: false
+                    })
+                  }
+                  confirmButton={this.handleConfirm}
+                  onDeleteTitleShow={onDeleteTitleShow}
+                  handleDeleteTitleConfirm={this.handleDeleteTitleConfirm}
+                />
+              )}
             </Segment>
             <QuestionRender
               questionExpansionClick={() =>
