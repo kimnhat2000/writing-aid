@@ -9,3 +9,7 @@
 .icon {
     cursor: pointer;
 }
+
+.break-line {
+    white-space: pre-wrap;
+}
