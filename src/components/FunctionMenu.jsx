@@ -1,6 +1,5 @@
 import React from 'react'
-import { Menu, Dropdown } from 'semantic-ui-react'
-
+import { Menu, Dropdown, Icon } from 'semantic-ui-react'
 import MySearch from './Search'
 
 const FunctionMenu = ({
@@ -16,12 +15,9 @@ const FunctionMenu = ({
   const dropdown =
     menuItems &&
     menuItems.map((item, index) => (
-      <Dropdown.Item
-        key={index}
-        name={item}
-        onClick={() => activeComponent(item)}
-      >
-        {item}
+      <Dropdown.Item key={index} onClick={() => activeComponent(item.name)}>
+        <Icon name={item.icon} />
+        {item.name}
       </Dropdown.Item>
     ))
   return (
@@ -35,6 +31,7 @@ const FunctionMenu = ({
           <Dropdown item text={shownComponentName}>
             <Dropdown.Menu>
               <Dropdown.Item onClick={() => addTitles()}>
+                <Icon name='add' />
                 Add a title
               </Dropdown.Item>
               <Dropdown.Item>
@@ -44,9 +41,11 @@ const FunctionMenu = ({
                 />
               </Dropdown.Item>
               <Dropdown.Item onClick={() => expandTitles()}>
+                <Icon name='sort amount down' />
                 Expand all tittles
               </Dropdown.Item>
               <Dropdown.Item onClick={() => collapseTitles()}>
+                <Icon name='sort amount up' />
                 Collapse all titles
               </Dropdown.Item>
             </Dropdown.Menu>

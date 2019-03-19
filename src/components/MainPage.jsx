@@ -8,6 +8,7 @@ import TextEditor from './TextEditor'
 import AppForm from './Form'
 import FunctionMenu from './FunctionMenu'
 import QuestionRender from './Question'
+import Drafts from './Drafts'
 
 import Test from './Test'
 
@@ -21,7 +22,7 @@ class WritingAidMain extends React.Component {
       onDeleteTitleShow: false,
       onConfirm: false,
       onFormOpen: false,
-      activeComponent: 'Responses',
+      activeComponent: 'Drafts',
       mainMenuItem: mainDropdownMenu,
       questionExpansion: false,
       timerClick: false,
@@ -247,6 +248,8 @@ class WritingAidMain extends React.Component {
                   handleDeleteTitleConfirm={this.handleDeleteTitleConfirm}
                 />
               )}
+
+              {activeComponent === 'Drafts' && <Drafts />}
             </Segment>
             <QuestionRender
               questionExpansionClick={() =>

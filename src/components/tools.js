@@ -141,19 +141,48 @@ export const dummyData = [
     id: uuid()
   }
 ]
+
+export const dummyDraftData = [
+  {customer:'customer 1', link:'www.google.com', question:{open:false, question:'Excepteur mollit reprehenderit do elit est sit commodo in officia culpa laborum.'}, createdAt: '18/03/2019', drafts:[
+    {draftId: uuid(), content:'Anim voluptate non aute minim occaecat magna nulla deserunt ea tempor ullamco eu. Esse reprehenderit ullamco est et pariatur dolore in cillum. Ut culpa cupidatat amet aliqua nisi veniam in.'},
+    {draftId: uuid(), content:'Ad ea sit deserunt eiusmod voluptate do et. Duis sint Lorem nostrud non in nostrud tempor. Ad quis eiusmod elit qui nulla amet. Proident qui minim occaecat commodo in excepteur. Laboris velit sit ex officia ad incididunt est officia non nulla. Ullamco do quis qui non. Non amet dolore deserunt pariatur magna pariatur laborum ad ex est Lorem do elit elit.'},
+    {draftId: uuid(), content:'Non non excepteur cupidatat cillum est laborum. Commodo veniam pariatur incididunt aute labore. Esse officia eu irure occaecat laborum eiusmod enim nostrud nulla magna. Incididunt duis cillum dolor amet occaecat duis elit labore. Nisi velit in reprehenderit proident voluptate consequat consequat. Dolore tempor non eiusmod nostrud aliqua.'},
+  ], groupDraftId: uuid()},
+  {customer:'customer 2', link:'no link', question:{open:false, question:'Qui dolore dolor laborum consequat dolor consectetur.'}, createdAt: '18/03/2019', drafts:[
+    {draftId: uuid(), content:'Anim voluptate non aute minim occaecat magna nulla deserunt ea tempor ullamco eu. Esse reprehenderit ullamco est et pariatur dolore in cillum. Ut culpa cupidatat amet aliqua nisi veniam in.'},
+    {draftId: uuid(), content:'Ad ea sit deserunt eiusmod voluptate do et. Duis sint Lorem nostrud non in nostrud tempor. Ad quis eiusmod elit qui nulla amet. Proident qui minim occaecat commodo in excepteur. Laboris velit sit ex officia ad incididunt est officia non nulla. Ullamco do quis qui non. Non amet dolore deserunt pariatur magna pariatur laborum ad ex est Lorem do elit elit.'},
+    {draftId: uuid(), content:'Non non excepteur cupidatat cillum est laborum. Commodo veniam pariatur incididunt aute labore. Esse officia eu irure occaecat laborum eiusmod enim nostrud nulla magna. Incididunt duis cillum dolor amet occaecat duis elit labore. Nisi velit in reprehenderit proident voluptate consequat consequat. Dolore tempor non eiusmod nostrud aliqua.'},
+  ]},
+  {customer:'customer 3', link:'no link', question:{open:false, question:'Irure cupidatat quis consequat aliqua nulla tempor do occaecat.'}, createdAt: '18/03/2019', drafts:[
+    {draftId: uuid(), content:'Anim voluptate non aute minim occaecat magna nulla deserunt ea tempor ullamco eu. Esse reprehenderit ullamco est et pariatur dolore in cillum. Ut culpa cupidatat amet aliqua nisi veniam in.'},
+    {draftId: uuid(), content:'Ad ea sit deserunt eiusmod voluptate do et. Duis sint Lorem nostrud non in nostrud tempor. Ad quis eiusmod elit qui nulla amet. Proident qui minim occaecat commodo in excepteur. Laboris velit sit ex officia ad incididunt est officia non nulla. Ullamco do quis qui non. Non amet dolore deserunt pariatur magna pariatur laborum ad ex est Lorem do elit elit.'},
+    {draftId: uuid(), content:'Non non excepteur cupidatat cillum est laborum. Commodo veniam pariatur incididunt aute labore. Esse officia eu irure occaecat laborum eiusmod enim nostrud nulla magna. Incididunt duis cillum dolor amet occaecat duis elit labore. Nisi velit in reprehenderit proident voluptate consequat consequat. Dolore tempor non eiusmod nostrud aliqua.'},
+  ]}
+]
+
 export const mainDropdownMenu = [
-  'Public',
-  'Responses',
-  'Snippet',
-  'Drafts',
-  'Database',
-  'statistic',
-  'logout',
+  { name: 'Public', icon: 'address book' },
+  { name: 'Responses', icon: 'clipboard list' },
+  { name: 'Snippet', icon: 'cut' },
+  { name: 'Drafts', icon: 'firstdraft' },
+  { name: 'Database', icon: 'database' },
+  { name: 'statistic', icon: 'numbered list' },
+  { name: 'logout', icon: 'log out' }
 ]
 
 export const textEditorDropdownMenu = [
-  { key: 'exportToDatabase', text: 'export to database', value: 'exportToDatabase', icon:'database' },
-  { key: 'saveToDraft', text: 'Save to draft', value: 'saveToDraft', icon:'sticky note' },
-  { key: 'load', text: 'Load answer', value: 'load', icon:'upload' },
-  { key: 'save', text: 'Save answer', value: 'save', icon:'download' },
+  {
+    key: 'exportToDatabase',
+    text: 'export to database',
+    value: 'exportToDatabase',
+    icon: 'database'
+  },
+  {
+    key: 'saveToDraft',
+    text: 'Save to draft',
+    value: 'saveToDraft',
+    icon: 'sticky note'
+  },
+  { key: 'load', text: 'Load answer', value: 'load', icon: 'upload' },
+  { key: 'save', text: 'Save answer', value: 'save', icon: 'download' }
 ]

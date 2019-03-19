@@ -28,15 +28,21 @@ const QuestionRender = ({ questionExpansion, questionExpansionClick }) => (
         
     </Segment.Group>
     :
-    <Segment textAlign='right'>
-        <Popup
-            trigger={
-                <Button onClick={() => questionExpansionClick()} size='mini'>
-                    <Icon name='arrow up' />
-                </Button>}
-            content='open question'
-        />
+    <Segment.Group horizontal>
+    <Segment disabled>
+                <h4>Click the button to open writing request</h4>
     </Segment>
+            <Segment textAlign='right'>
+                <Popup
+                    trigger={
+                        <Button onClick={() => questionExpansionClick()} size='mini'>
+                            <Icon name='arrow up' />
+                        </Button>}
+                    content='open question'
+                />
+            </Segment>
+    </Segment.Group>
+
 )
 
 export default QuestionRender;

@@ -4,7 +4,8 @@ import {
   Form,
   Container,
   Dropdown,
-  Icon
+  Icon,
+
 } from 'semantic-ui-react'
 
 import Timer from './Timer'
@@ -38,7 +39,7 @@ class TextEditor extends React.Component {
           />
         </Form>
 
-        <segment>
+        <Container>
           <Dropdown
             trigger={
               <span>
@@ -48,7 +49,7 @@ class TextEditor extends React.Component {
             options={textEditorDropdownMenu}
           />
           <Timer onTimerClick={onTimerClick} startTimer={startTimer} />
-        </segment>
+        </Container>
       </Container>
     )
   }

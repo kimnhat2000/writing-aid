@@ -29,23 +29,23 @@ const AvailableOptions = props => {
         />
       </Container>
     ) : (
-      <Container className='title' key={i}>
-        <h4 className='title' onClick={clickATitle(d.id)}>
+      <Container className="title" key={i}>
+        <h4 className="title" onClick={clickATitle(d.id)}>
           {d.title}
           <Popup
             trigger={
-              <Button size='mini' icon floated='right'>
-                <Icon name='angle double down' />
+              <Button size="mini" icon floated="right">
+                <Icon name="angle double down" />
               </Button>
             }
-            content='open title'
+            content="open title"
           />
         </h4>
 
-        <Divider horizontal>{i + 1 + '/' + props.data.length}</Divider>
+        <Divider horizontal>{i + 1 + "/" + props.data.length}</Divider>
       </Container>
     )
-  )
+  );
 
   return (
     <div>
