@@ -27,7 +27,7 @@ const FunctionMenu = ({
       </Dropdown>
 
       <Menu.Menu>
-        {shownComponentName === 'Responses' ? (
+        {shownComponentName === 'Responses' && (
           <Dropdown item text={shownComponentName}>
             <Dropdown.Menu>
               <Dropdown.Item onClick={() => addTitles()}>
@@ -50,10 +50,26 @@ const FunctionMenu = ({
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-        ) : (
-          <Menu.Item>
-            <h4>{shownComponentName}</h4>
-          </Menu.Item>
+        )}
+        {shownComponentName === 'Drafts' && (
+          <Dropdown item text={shownComponentName}>
+            <Dropdown.Menu>
+              <Dropdown.Item>
+                <MySearch
+                  searchData={searchData}
+                  foundDataBeingSentBack={foundDataBeingSentBack}
+                />
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => expandTitles()}>
+                <Icon name='sort amount down' />
+                Expand all drafts
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => collapseTitles()}>
+                <Icon name='sort amount up' />
+                Collapse all drafts
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         )}
       </Menu.Menu>
     </Menu>
