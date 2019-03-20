@@ -2,13 +2,14 @@ import React from 'react'
 import { Container, Header, Grid, Icon, Segment } from 'semantic-ui-react'
 import copy from 'copy-to-clipboard'
 
-import { dummyData, mainDropdownMenu } from './tools'
+import { dummyData, mainDropdownMenu, dummyDraftData } from './tools'
 import AvailableOptions from './Title'
 import TextEditor from './TextEditor'
 import AppForm from './Form'
 import FunctionMenu from './FunctionMenu'
 import QuestionRender from './Question'
 import Drafts from './Drafts'
+import DraftEditForm from './DraftEditForm'
 
 import Test from './Test'
 
@@ -26,7 +27,11 @@ class WritingAidMain extends React.Component {
       mainMenuItem: mainDropdownMenu,
       questionExpansion: false,
       timerClick: false,
-      optionToEdit: {}
+      optionToEdit: {},
+
+      showTextEditor: true,
+      drafts: dummyDraftData,
+      openDraftForm: false
     }
   }
 
@@ -77,7 +82,13 @@ class WritingAidMain extends React.Component {
         item.id === searchedTitle.id ? searchedTitle : item
       )
     copy(d.option)
-    this.setState({ data, onFormOpen: false, dataRenderedAfterSearch })
+    this.setState({
+      data,
+      onFormOpen: false,
+      showTextEditor: true,
+      openDraftForm: false,
+      dataRenderedAfterSearch
+    })
   }
 
   onEditOptionButtonClick = (option, titleId) => {
@@ -89,6 +100,8 @@ class WritingAidMain extends React.Component {
     this.setState(
       {
         onFormOpen: !onFormOpen,
+        showTextEditor: onFormOpen,
+        openDraftForm: onFormOpen && false,
         optionToEdit: {
           ...optionToEdit[0],
           title: filterTitleContentsOption[0].title,
@@ -96,7 +109,7 @@ class WritingAidMain extends React.Component {
           titleId
         }
       },
-      () => console.log('possible match: ', this.state.optionToEdit)
+      () => console.log('showTextEditor: ', this.state.showTextEditor)
     )
   }
 
@@ -128,7 +141,13 @@ class WritingAidMain extends React.Component {
       this.state.dataRenderedAfterSearch.map(item =>
         item.id === searchedTitle.id ? searchedTitle : item
       )
-    this.setState({ data, onFormOpen: false, dataRenderedAfterSearch })
+    this.setState({
+      data,
+      onFormOpen: false,
+      dataRenderedAfterSearch,
+      showTextEditor: true,
+      openDraftForm: false
+    })
   }
 
   handleConfirm = (option, titleId) => {
@@ -171,7 +190,10 @@ class WritingAidMain extends React.Component {
       timerClick,
       questionExpansion,
       optionToEdit,
-      dataRenderedAfterSearch
+      dataRenderedAfterSearch,
+      drafts,
+      openDraftForm,
+      showTextEditor
     } = this.state
     return (
       <Container>
@@ -211,13 +233,18 @@ class WritingAidMain extends React.Component {
                   })
                 }
                 addTitles={() =>
-                  this.setState({ onFormOpen: true, optionToEdit: {} })
+                  this.setState({
+                    onFormOpen: true,
+                    showTextEditor: false,
+                    openDraftForm: false,
+                    optionToEdit: {}
+                  })
                 }
                 searchData={data}
                 foundDataBeingSentBack={this.actionAfterSearchData}
               />
 
-              {activeComponent === 'Public' && <Test />}
+              {activeComponent === 'Public' && <DraftEditForm />}
 
               {activeComponent === 'Responses' && (
                 <AvailableOptions
@@ -249,7 +276,19 @@ class WritingAidMain extends React.Component {
                 />
               )}
 
-              {activeComponent === 'Drafts' && <Drafts />}
+              {activeComponent === 'Drafts' && (
+                <Drafts
+                  drafts={drafts}
+                  openDraftForm={openDraftForm}
+                  editDraftButtonClick={() =>
+                    this.setState({
+                      onFormOpen: false,
+                      showTextEditor: false,
+                      openDraftForm: true
+                    })
+                  }
+                />
+              )}
             </Segment>
             <QuestionRender
               questionExpansionClick={() =>
@@ -259,9 +298,15 @@ class WritingAidMain extends React.Component {
             />
           </Grid.Column>
           <Grid.Column width={10}>
-            {onFormOpen ? (
+            {onFormOpen && (
               <AppForm
-                onFormOpen={() => this.setState({ onFormOpen: false })}
+                onFormOpen={() =>
+                  this.setState({
+                    onFormOpen: false,
+                    showTextEditor: true,
+                    openDraftForm: false
+                  })
+                }
                 onAddtitle={newTitle =>
                   this.setState({ data: [newTitle, ...data] }, () =>
                     console.log(data)
@@ -270,7 +315,11 @@ class WritingAidMain extends React.Component {
                 optionToEdit={optionToEdit}
                 editChange={this.editChange}
               />
-            ) : (
+            )}
+
+            {openDraftForm && <Test />}
+
+            {showTextEditor && (
               <TextEditor
                 onTimerClick={() => this.setState({ timerClick: !timerClick })}
                 startTimer={timerClick}

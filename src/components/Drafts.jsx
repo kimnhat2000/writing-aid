@@ -2,8 +2,6 @@ import React from 'react'
 import { Segment, Header, Container, Icon, Popup } from 'semantic-ui-react'
 import copy from 'copy-to-clipboard'
 
-import { dummyDraftData } from './tools'
-
 class Drafts extends React.Component {
   constructor (props) {
     const today = new Date()
@@ -12,25 +10,30 @@ class Drafts extends React.Component {
     )
     super(props)
     this.state = {
-      drafts: dummyDraftData,
-      openForm: false
+      drafts: this.props.drafts,
+      openDraftForm: this.props.openDraftForm
     }
+  }
+
+  showDraft = draftId => {
+    const drafts = this.state.drafts.map(draft => draft.draftId === draftId ? { ...draft, openDraft: !draft.openDraft, draftClick: !draft.draftClick } : draft)
+    this.setState({drafts, openDraftForm: false})
   }
 
   onDraftClick = draft => {
     const drafts = this.state.drafts.map(data =>
       data.draftId === draft.draftId
-        ? { ...data, contentClick: true }
-        : { ...data, contentClick: false }
+        ? { ...data, draftClick: true }
+        : { ...data, draftClick: false }
     )
-    this.setState({ drafts, openForm: false }, () => {
-      console.log(draft.contentClick)
+    this.setState({ drafts, openDraftForm: false }, () => {
+      console.log(draft.draftClick)
     })
     copy(draft.draftContent)
   }
 
   onEditDraft = draft => {
-    this.setState({openForm:!this.state.openForm})
+    this.props.editDraftButtonClick()
   }
 
   openQuestion = draftId => {
@@ -46,12 +49,12 @@ class Drafts extends React.Component {
   }
 
   render () {
-    const { drafts, openForm } = this.state
-    const draftRender = drafts.map((draft, index) => (
+    const { drafts, openDraftForm } = this.state
+    const draftRender = drafts && drafts.map((draft, index) => (
       <Segment key={index} className='title'>
           <Header as='h4' dividing>
             <Icon name='firstdraft' />
-            <Header.Content>
+            <Header.Content onClick={()=>this.showDraft(draft.draftId)}>
               {draft.customer
                 ? `Draft in response for ${draft.customer} question`
                 : `no customer name`}
@@ -74,10 +77,17 @@ class Drafts extends React.Component {
               )}
             </p>
           </Header>
-          <p onClick={() => this.onDraftClick(draft)}>
-            {draft.draftContent} {index + 1} / {dummyDraftData.length}
-          </p>
-        {draft.contentClick && (
+          {draft.openDraft&&
+          <Popup
+          trigger={<p onClick={() => this.onDraftClick(draft)}>
+            {draft.draftContent} {index + 1} / {drafts.length}
+          </p>}
+          content='copied'
+          on='click'
+          hideOnScroll
+          />
+}
+        {draft.draftClick && (
           <Container>
             <Popup
               trigger={<Icon name='check' color='green' />}
@@ -87,7 +97,7 @@ class Drafts extends React.Component {
               trigger={
                 <Icon
                   name='edit'
-                  color={openForm ? 'grey' : 'blue'}
+                  color={openDraftForm ? 'grey' : 'blue'}
                   onClick={()=>this.onEditDraft(draft)}
                 />
               }

@@ -10,7 +10,9 @@ const FunctionMenu = ({
   collapseTitles,
   addTitles,
   searchData,
-  foundDataBeingSentBack
+  foundDataBeingSentBack,
+
+  
 }) => {
   const dropdown =
     menuItems &&
