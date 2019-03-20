@@ -12,7 +12,8 @@ const FunctionMenu = ({
   searchData,
   foundDataBeingSentBack,
 
-  
+  expandDrafts,
+  collapseDrafts
 }) => {
   const dropdown =
     menuItems &&
@@ -62,11 +63,11 @@ const FunctionMenu = ({
                   foundDataBeingSentBack={foundDataBeingSentBack}
                 />
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => expandTitles()}>
+              <Dropdown.Item onClick={() => expandDrafts()}>
                 <Icon name='sort amount down' />
                 Expand all drafts
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => collapseTitles()}>
+              <Dropdown.Item onClick={() => collapseDrafts()}>
                 <Icon name='sort amount up' />
                 Collapse all drafts
               </Dropdown.Item>

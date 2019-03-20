@@ -1,5 +1,12 @@
 import React from 'react'
-import { Segment, Header, Container, Icon, Popup } from 'semantic-ui-react'
+import {
+  Segment,
+  Header,
+  Container,
+  Icon,
+  Popup,
+  Confirm
+} from 'semantic-ui-react'
 import copy from 'copy-to-clipboard'
 
 class Drafts extends React.Component {
@@ -10,34 +17,46 @@ class Drafts extends React.Component {
     )
     super(props)
     this.state = {
-      drafts: this.props.drafts,
-      openDraftForm: this.props.openDraftForm
+      drafts: this.props.drafts
     }
   }
 
-  showDraft = draftId => {
-    const drafts = this.state.drafts.map(draft => draft.draftId === draftId ? { ...draft, openDraft: !draft.openDraft, draftClick: !draft.draftClick } : draft)
-    this.setState({drafts, openDraftForm: false})
+  showDrafts = draftId => {
+    const drafts = this.props.drafts.map(draft =>
+      draft.draftId === draftId
+        ? {
+          ...draft,
+          openDraft: !draft.openDraft,
+          draftClick: !draft.draftClick
+        }
+        : draft
+    )
+    this.props.onShowDrafts(drafts)
   }
 
   onDraftClick = draft => {
-    const drafts = this.state.drafts.map(data =>
+    const drafts = this.props.drafts.map(data =>
       data.draftId === draft.draftId
         ? { ...data, draftClick: true }
         : { ...data, draftClick: false }
     )
-    this.setState({ drafts, openDraftForm: false }, () => {
-      console.log(draft.draftClick)
-    })
+    this.props.onDraftClick(drafts)
     copy(draft.draftContent)
   }
 
-  onEditDraft = draft => {
+  onEditDraftClick = draftId => {
     this.props.editDraftButtonClick()
   }
 
+  onDeleteDraft = draftId => {
+    const drafts =
+      this.props.drafts &&
+      this.props.drafts.filter(draft => draft.draftId !== draftId)
+    this.props.deleteDraftButtonConfirm(drafts)
+  }
+
   openQuestion = draftId => {
-    const drafts = this.state.drafts.map(draft =>
+    const drafts = this.props.drafts.map(draft =>
       draft.draftId === draftId
         ? {
           ...draft,
@@ -45,16 +64,23 @@ class Drafts extends React.Component {
         }
         : draft
     )
-    this.setState({ drafts })
+    this.props.onOpenQuestion(drafts)
   }
 
   render () {
-    const { drafts, openDraftForm } = this.state
-    const draftRender = drafts && drafts.map((draft, index) => (
-      <Segment key={index} className='title'>
+    const {
+      cancelButton,
+      onConfirmShow,
+      deleteOptionButtonClick,
+      drafts
+    } = this.props
+    const draftRender =
+      drafts &&
+      drafts.map((draft, index) => (
+        <Segment key={index} className='title'>
           <Header as='h4' dividing>
             <Icon name='firstdraft' />
-            <Header.Content onClick={()=>this.showDraft(draft.draftId)}>
+            <Header.Content onClick={() => this.showDrafts(draft.draftId)}>
               {draft.customer
                 ? `Draft in response for ${draft.customer} question`
                 : `no customer name`}
@@ -68,6 +94,7 @@ class Drafts extends React.Component {
                 </a>
               </Header.Subheader>
               <Header.Subheader>{draft.createdAt}</Header.Subheader>
+              <Header.Subheader>Written in {draft.writingTime}</Header.Subheader>
             </Header.Content>
             <p onClick={() => this.openQuestion(draft.draftId)}>
               {draft.question.open ? (
@@ -77,40 +104,58 @@ class Drafts extends React.Component {
               )}
             </p>
           </Header>
-          {draft.openDraft&&
-          <Popup
-          trigger={<p onClick={() => this.onDraftClick(draft)}>
-            {draft.draftContent} {index + 1} / {drafts.length}
-          </p>}
-          content='copied'
-          on='click'
-          hideOnScroll
-          />
-}
-        {draft.draftClick && (
-          <Container>
-            <Popup
-              trigger={<Icon name='check' color='green' />}
-              content='draft copied'
-            />
+          {draft.openDraft && (
             <Popup
               trigger={
-                <Icon
-                  name='edit'
-                  color={openDraftForm ? 'grey' : 'blue'}
-                  onClick={()=>this.onEditDraft(draft)}
-                />
+                <p onClick={() => this.onDraftClick(draft)}>
+                  {draft.draftContent} {index + 1} / {drafts.length}
+                </p>
               }
-              content='edit this draft'
+              content='copied'
+              on='click'
+              hideOnScroll
             />
-            <Popup
-              trigger={<Icon name='delete' color='red' />}
-              content='delete this draft'
-            />
-          </Container>
-        )}
-      </Segment>
-    ))
+          )}
+          {draft.draftClick && (
+            <Container>
+              <Popup
+                trigger={<Icon name='check' color='green' />}
+                content='draft copied'
+              />
+              <Popup
+                trigger={
+                  <Icon
+                    name='edit'
+                    color={this.props.openDraftForm ? 'grey' : 'blue'}
+                    onClick={() => this.onEditDraftClick(draft)}
+                  />
+                }
+                content='edit this draft'
+              />
+              <Popup
+                trigger={
+                  <Icon
+                    name='delete'
+                    color='red'
+                    onClick={deleteOptionButtonClick}
+                  />
+                }
+                content='delete this draft'
+              />
+              {onConfirmShow && (
+                <Confirm
+                  open={onConfirmShow}
+                  content='are you sure you want to delete this item?'
+                  cancelButton='Never mind'
+                  confirmButton="Let's do it"
+                  onCancel={() => cancelButton()}
+                  onConfirm={() => this.onDeleteDraft(draft.draftId)}
+                />
+              )}
+            </Container>
+          )}
+        </Segment>
+      ))
     return <Container>{draftRender}</Container>
   }
 }

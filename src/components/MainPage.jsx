@@ -242,6 +242,32 @@ class WritingAidMain extends React.Component {
                 }
                 searchData={data}
                 foundDataBeingSentBack={this.actionAfterSearchData}
+                expandDrafts={() =>
+                  this.setState({
+                    showTextEditor: true,
+                    onFormOpen: false,
+                    openDraftForm: false,
+                    drafts: drafts.map(draft => ({
+                      ...draft,
+                      openDraft: true,
+                      draftClick: false,
+                      question: { ...draft.question, open: true }
+                    }))
+                  })
+                }
+                collapseDrafts={() =>
+                  this.setState({
+                    showTextEditor: true,
+                    onFormOpen: false,
+                    openDraftForm: false,
+                    drafts: drafts.map(draft => ({
+                      ...draft,
+                      openDraft: false,
+                      draftClick: false,
+                      question: { ...draft.question, open: false }
+                    }))
+                  })
+                }
               />
 
               {activeComponent === 'Public' && <DraftEditForm />}
@@ -283,10 +309,35 @@ class WritingAidMain extends React.Component {
                   editDraftButtonClick={() =>
                     this.setState({
                       onFormOpen: false,
-                      showTextEditor: false,
-                      openDraftForm: true
+                      showTextEditor: openDraftForm,
+                      openDraftForm: !openDraftForm
                     })
                   }
+                  deleteOptionButtonClick={() =>
+                    this.setState({ onConfirmShow: true })
+                  }
+                  deleteDraftButtonConfirm={drafts => {
+                    this.setState({ drafts, onConfirmShow: false })
+                  }}
+                  cancelButton={() => this.setState({ onConfirmShow: false })}
+                  onConfirmShow={onConfirmShow}
+                  onShowDrafts={drafts =>
+                    this.setState({
+                      drafts,
+                      onFormOpen: false,
+                      showTextEditor: true,
+                      openDraftForm: false
+                    })
+                  }
+                  onDraftClick={drafts =>
+                    this.setState({
+                      drafts,
+                      onFormOpen: false,
+                      showTextEditor: true,
+                      openDraftForm: false
+                    })
+                  }
+                  onOpenQuestion={drafts => this.setState({ drafts })}
                 />
               )}
             </Segment>
@@ -317,7 +368,7 @@ class WritingAidMain extends React.Component {
               />
             )}
 
-            {openDraftForm && <Test />}
+            {openDraftForm && <DraftEditForm />}
 
             {showTextEditor && (
               <TextEditor

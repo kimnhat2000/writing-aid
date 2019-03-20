@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form } from 'semantic-ui-react'
+import { Form, Button } from 'semantic-ui-react'
 
 class DraftEditForm extends React.Component {
     state = {}
@@ -8,13 +8,18 @@ class DraftEditForm extends React.Component {
         return (
             <Form>
                 <Form.Group widths='equal'>
+                    <Form.Input fluid label="Created on" placeholder='no create date' />
                     <Form.Input fluid label="Customer's name" placeholder='no customer name' />
                     <Form.Input fluid label='Link' placeholder='no link' />
                 </Form.Group>
             
                 <Form.TextArea label='Question' placeholder='Questomer question...' />
-                <Form.TextArea label='Draft' placeholder='Draft...' />
-                <Form.Button>Submit</Form.Button>
+                <Form.TextArea style={{minHeight: 300 }} label='Draft' placeholder='Draft...' />
+                <Button.Group>
+                    <Button>Cancel</Button>
+                    <Button.Or />
+                    <Button positive>OK</Button>
+                </Button.Group> 
             </Form>
         )
     }
