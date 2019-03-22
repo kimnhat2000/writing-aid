@@ -3,6 +3,7 @@ import { Container, Header, Grid, Icon, Segment } from 'semantic-ui-react'
 import copy from 'copy-to-clipboard'
 
 import { dummyData, mainDropdownMenu, dummyDraftData } from './tools'
+import Responses from './Responses'
 import AvailableOptions from './Title'
 import TextEditor from './TextEditor'
 import AppForm from './Form'
@@ -23,12 +24,11 @@ class WritingAidMain extends React.Component {
       onDeleteTitleShow: false,
       onConfirm: false,
       onFormOpen: false,
-      activeComponent: 'Drafts',
+      activeComponent: 'Responses',
       mainMenuItem: mainDropdownMenu,
       questionExpansion: false,
       timerClick: false,
       optionToEdit: {},
-
       showTextEditor: true,
       drafts: dummyDraftData,
       openDraftForm: false
@@ -36,27 +36,19 @@ class WritingAidMain extends React.Component {
   }
 
   onTitleClick = id => {
-    const { dataRenderedAfterSearch } = this.state
     const data = this.state.data.map(item =>
       item.id === id ? { ...item, collapse: !item.collapse } : item
     )
-    const dataChangeAfterSearch =
-      dataRenderedAfterSearch.length >= 1 &&
-      dataRenderedAfterSearch.map(item =>
-        item.id === id ? { ...item, collapse: !item.collapse } : item
-      )
-    this.setState({ data, dataRenderedAfterSearch: dataChangeAfterSearch })
+    this.setState({ data })
   }
 
   handleDeleteTitleConfirm = titleId => {
     const data = this.state.data.filter(item => item.id !== titleId)
-    const dataRenderedAfterSearch =
-      this.state.dataRenderedAfterSearch.length >= 1 &&
-      this.state.dataRenderedAfterSearch.filter(item => item.id !== titleId)
-    this.setState({ data, onDeleteTitleShow: false, dataRenderedAfterSearch })
+    this.setState({ data, onDeleteTitleShow: false })
   }
 
   onOptionClick = (d, i) => {
+    console.log(this.state.data)
     const data = this.state.data.map(item =>
       item.id === i
         ? {
@@ -75,19 +67,12 @@ class WritingAidMain extends React.Component {
           }))
         }
     )
-    const searchedTitle = data.filter(item => item.id === i)[0]
-    const dataRenderedAfterSearch =
-      this.state.dataRenderedAfterSearch.length >= 1 &&
-      this.state.dataRenderedAfterSearch.map(item =>
-        item.id === searchedTitle.id ? searchedTitle : item
-      )
     copy(d.option)
     this.setState({
       data,
       onFormOpen: false,
       showTextEditor: true,
-      openDraftForm: false,
-      dataRenderedAfterSearch
+      openDraftForm: false
     })
   }
 
@@ -135,48 +120,30 @@ class WritingAidMain extends React.Component {
         }
         : item
     )
-    const searchedTitle = data.filter(item => item.id === change.titleId)[0]
-    const dataRenderedAfterSearch =
-      this.state.dataRenderedAfterSearch.length >= 1 &&
-      this.state.dataRenderedAfterSearch.map(item =>
-        item.id === searchedTitle.id ? searchedTitle : item
-      )
     this.setState({
       data,
       onFormOpen: false,
-      dataRenderedAfterSearch,
       showTextEditor: true,
       openDraftForm: false
     })
   }
 
-  handleConfirm = (option, titleId) => {
+  handleConfirm = (optionId, titleId) => {
     const data = this.state.data.map(item =>
       item.id === titleId
         ? {
           ...item,
-          possibleAnswers: item.possibleAnswers.filter(i => i.id !== option)
+          possibleAnswers: item.possibleAnswers.filter(i => i.id !== optionId)
         }
         : item
     )
-    const searchedTitle = data.filter(item => item.id === titleId)[0]
-    const dataRenderedAfterSearch =
-      this.state.dataRenderedAfterSearch.length >= 1 &&
-      this.state.dataRenderedAfterSearch.map(item =>
-        item.id === searchedTitle.id ? searchedTitle : item
-      )
-
+    console.log('clicked: ', optionId, 'titleID:', titleId, data)
     this.setState({
       data,
       onConfirmShow: false,
       onDeleteTitleShow: false,
-      dataRenderedAfterSearch
+      onFormOpen: false
     })
-  }
-
-  actionAfterSearchData = foundData => {
-    this.setState({ dataRenderedAfterSearch: foundData })
-    console.log(foundData)
   }
 
   render () {
@@ -190,7 +157,6 @@ class WritingAidMain extends React.Component {
       timerClick,
       questionExpansion,
       optionToEdit,
-      dataRenderedAfterSearch,
       drafts,
       openDraftForm,
       showTextEditor
@@ -212,24 +178,12 @@ class WritingAidMain extends React.Component {
                 shownComponentName={this.state.activeComponent}
                 expandTitles={() =>
                   this.setState({
-                    data: data.map(data => ({ ...data, collapse: true })),
-                    dataRenderedAfterSearch:
-                      dataRenderedAfterSearch &&
-                      dataRenderedAfterSearch.map(data => ({
-                        ...data,
-                        collapse: true
-                      }))
+                    data: data.map(data => ({ ...data, collapse: true }))
                   })
                 }
                 collapseTitles={() =>
                   this.setState({
-                    data: data.map(data => ({ ...data, collapse: false })),
-                    dataRenderedAfterSearch:
-                      dataRenderedAfterSearch &&
-                      dataRenderedAfterSearch.map(data => ({
-                        ...data,
-                        collapse: false
-                      }))
+                    data: data.map(data => ({ ...data, collapse: false }))
                   })
                 }
                 addTitles={() =>
@@ -241,7 +195,6 @@ class WritingAidMain extends React.Component {
                   })
                 }
                 searchData={data}
-                foundDataBeingSentBack={this.actionAfterSearchData}
                 expandDrafts={() =>
                   this.setState({
                     showTextEditor: true,
@@ -272,23 +225,19 @@ class WritingAidMain extends React.Component {
 
               {activeComponent === 'Public' && <DraftEditForm />}
 
+
+
+
+
+
+
               {activeComponent === 'Responses' && (
-                <AvailableOptions
-                  data={
-                    dataRenderedAfterSearch.length >= 1
-                      ? dataRenderedAfterSearch
-                      : data
-                  }
+                <Responses
+                  data={data}
+                  onTitleClick={(title)=>this.onTitleClick(title)}
                   onOptionClick={this.onOptionClick}
-                  onTitleClick={this.onTitleClick}
-                  onDeleteTitleClick={() =>
-                    this.setState({ onDeleteTitleShow: true })
-                  }
                   onEditOptionButtonClick={this.onEditOptionButtonClick}
-                  editOptionButtonStatus={onFormOpen}
-                  onDeleteOptionButtonClick={() =>
-                    this.setState({ onConfirmShow: true })
-                  }
+                  onDeleteOptionButtonClick={() => this.setState({ onConfirmShow: true })}
                   onConfirmShow={onConfirmShow}
                   cancelButton={() =>
                     this.setState({
@@ -299,7 +248,15 @@ class WritingAidMain extends React.Component {
                   confirmButton={this.handleConfirm}
                   onDeleteTitleShow={onDeleteTitleShow}
                   handleDeleteTitleConfirm={this.handleDeleteTitleConfirm}
+                  onDeleteTitleClick={() => this.setState({ onDeleteTitleShow: true })}
+
+
                 />
+
+
+
+
+               
               )}
 
               {activeComponent === 'Drafts' && (
@@ -384,3 +341,28 @@ class WritingAidMain extends React.Component {
 }
 
 export default WritingAidMain
+
+
+//   < AvailableOptions
+// data = { data }
+// onOptionClick = { this.onOptionClick }
+// onTitleClick = { this.onTitleClick }
+// onDeleteTitleClick = {() =>
+// this.setState({ onDeleteTitleShow: true })
+//                   }
+// onEditOptionButtonClick = { this.onEditOptionButtonClick }
+// editOptionButtonStatus = { onFormOpen }
+// onDeleteOptionButtonClick = {() =>
+// this.setState({ onConfirmShow: true })
+//                   }
+// onConfirmShow = { onConfirmShow }
+// cancelButton = {() =>
+// this.setState({
+//   onConfirmShow: false,
+//   onDeleteTitleShow: false
+// })
+//                   }
+// confirmButton = { this.handleConfirm }
+// onDeleteTitleShow = { onDeleteTitleShow }
+// handleDeleteTitleConfirm = { this.handleDeleteTitleConfirm }
+//   />

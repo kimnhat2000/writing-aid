@@ -22,6 +22,7 @@ const Option = ({
   cancelButton,
   confirmButton,
   editOptionButtonStatus,
+  
   onDeleteTitleClick,
   handleDeleteTitleConfirm,
   onDeleteTitleShow
