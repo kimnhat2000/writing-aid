@@ -4,7 +4,6 @@ import copy from 'copy-to-clipboard'
 
 import { dummyData, mainDropdownMenu, dummyDraftData } from './tools'
 import Responses from './Responses'
-import AvailableOptions from './Title'
 import TextEditor from './TextEditor'
 import AppForm from './Form'
 import FunctionMenu from './FunctionMenu'
@@ -19,7 +18,6 @@ class WritingAidMain extends React.Component {
     super(props)
     this.state = {
       data: dummyData,
-      dataRenderedAfterSearch: [],
       onConfirmShow: false,
       onDeleteTitleShow: false,
       onConfirm: false,
@@ -31,15 +29,41 @@ class WritingAidMain extends React.Component {
       optionToEdit: {},
       showTextEditor: true,
       drafts: dummyDraftData,
-      openDraftForm: false
+      openDraftForm: false,
+      titleToAddOptionTo: {}
     }
   }
 
   onTitleClick = id => {
-    const data = this.state.data.map(item =>
-      item.id === id ? { ...item, collapse: !item.collapse } : item
+    const data = this.state.data.map(title =>
+      title.id === id ? { ...title, collapse: !title.collapse } : title
     )
     this.setState({ data })
+  }
+
+  addOptionToTitleClick = title => {
+    const { onFormOpen } = this.state
+    this.setState({
+      onFormOpen: !onFormOpen,
+      showTextEditor: !!onFormOpen,
+      optionToEdit: {}
+    })
+    const titleToAddOptionTo = { ...title, possibleAnswers: [] }
+    this.setState({ titleToAddOptionTo })
+  }
+
+  onAddOptionToTitle = option => {
+    const data = this.state.data.map(title =>
+      title.id === option.id
+        ? {
+          ...title,
+          possibleAnswers: [option.possibleAnswers, ...title.possibleAnswers], collapse: true
+
+        }
+        : title
+    )
+    console.log('added option: ', data[0])
+    this.setState({ data, onFormOpen: false, showTextEditor: true })
   }
 
   handleDeleteTitleConfirm = titleId => {
@@ -86,6 +110,7 @@ class WritingAidMain extends React.Component {
       {
         onFormOpen: !onFormOpen,
         showTextEditor: onFormOpen,
+        titleToAddOptionTo: {},
         openDraftForm: onFormOpen && false,
         optionToEdit: {
           ...optionToEdit[0],
@@ -133,7 +158,9 @@ class WritingAidMain extends React.Component {
       item.id === titleId
         ? {
           ...item,
-          possibleAnswers: item.possibleAnswers.filter(i => i.id !== optionId)
+          possibleAnswers: item.possibleAnswers.filter(
+            i => i.id !== optionId
+          )
         }
         : item
     )
@@ -159,7 +186,8 @@ class WritingAidMain extends React.Component {
       optionToEdit,
       drafts,
       openDraftForm,
-      showTextEditor
+      showTextEditor,
+      titleToAddOptionTo
     } = this.state
     return (
       <Container>
@@ -225,19 +253,18 @@ class WritingAidMain extends React.Component {
 
               {activeComponent === 'Public' && <DraftEditForm />}
 
-
-
-
-
-
-
               {activeComponent === 'Responses' && (
                 <Responses
                   data={data}
-                  onTitleClick={(title)=>this.onTitleClick(title)}
+                  onTitleClick={title => this.onTitleClick(title)}
+                  clickOnAddOptionToTitle={titleToAddOptionTo =>
+                    this.addOptionToTitleClick(titleToAddOptionTo)
+                  }
                   onOptionClick={this.onOptionClick}
                   onEditOptionButtonClick={this.onEditOptionButtonClick}
-                  onDeleteOptionButtonClick={() => this.setState({ onConfirmShow: true })}
+                  onDeleteOptionButtonClick={() =>
+                    this.setState({ onConfirmShow: true })
+                  }
                   onConfirmShow={onConfirmShow}
                   cancelButton={() =>
                     this.setState({
@@ -248,15 +275,10 @@ class WritingAidMain extends React.Component {
                   confirmButton={this.handleConfirm}
                   onDeleteTitleShow={onDeleteTitleShow}
                   handleDeleteTitleConfirm={this.handleDeleteTitleConfirm}
-                  onDeleteTitleClick={() => this.setState({ onDeleteTitleShow: true })}
-
-
+                  onDeleteTitleClick={() =>
+                    this.setState({ onDeleteTitleShow: true })
+                  }
                 />
-
-
-
-
-               
               )}
 
               {activeComponent === 'Drafts' && (
@@ -321,6 +343,8 @@ class WritingAidMain extends React.Component {
                   )
                 }
                 optionToEdit={optionToEdit}
+                titleToAddOptionTo={titleToAddOptionTo}
+                onAddOptionToTitle={this.onAddOptionToTitle}
                 editChange={this.editChange}
               />
             )}
@@ -341,28 +365,3 @@ class WritingAidMain extends React.Component {
 }
 
 export default WritingAidMain
-
-
-//   < AvailableOptions
-// data = { data }
-// onOptionClick = { this.onOptionClick }
-// onTitleClick = { this.onTitleClick }
-// onDeleteTitleClick = {() =>
-// this.setState({ onDeleteTitleShow: true })
-//                   }
-// onEditOptionButtonClick = { this.onEditOptionButtonClick }
-// editOptionButtonStatus = { onFormOpen }
-// onDeleteOptionButtonClick = {() =>
-// this.setState({ onConfirmShow: true })
-//                   }
-// onConfirmShow = { onConfirmShow }
-// cancelButton = {() =>
-// this.setState({
-//   onConfirmShow: false,
-//   onDeleteTitleShow: false
-// })
-//                   }
-// confirmButton = { this.handleConfirm }
-// onDeleteTitleShow = { onDeleteTitleShow }
-// handleDeleteTitleConfirm = { this.handleDeleteTitleConfirm }
-//   />

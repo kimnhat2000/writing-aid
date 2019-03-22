@@ -3,17 +3,11 @@ import uuid from 'uuid'
 export const dummyData = [
   {
     title: 'Occaecat sint aliquip tempor laborum.',
-    possibleMatch: [
+    possibleMatch: 
       {
         id: uuid(),
         value: 'Et est duis adipisicing sint non elit est Lorem commodo.'
       },
-      {
-        id: uuid(),
-        value:
-          'Incididunt cupidatat consequat ut do esse et dolor exercitation ad cupidatat laborum.'
-      }
-    ],
     createdBy: 'abc',
     icon: '',
     image: '',
@@ -162,6 +156,7 @@ export const mainDropdownMenu = [
 ]
 
 export const textEditorDropdownMenu = [
+  { key: 'template', text: 'your greeting template', value: 'template', icon: 'theme' },
   {
     key: 'exportToDatabase',
     text: 'export to database',

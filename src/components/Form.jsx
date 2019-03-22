@@ -5,26 +5,33 @@ import uuid from 'uuid'
 class AppForm extends React.Component {
   constructor (props) {
     super(props)
-    const { optionToEdit } = this.props
-    console.log('from props: ', optionToEdit)
+    const { optionToEdit, titleToAddOptionTo } = this.props
+    console.log('from props: ', titleToAddOptionTo.id)
     this.state = {
       answer: '',
-      title: optionToEdit.title ? optionToEdit.title : '',
-      possibleMatch:
-        optionToEdit.possibleMatch
+      title: titleToAddOptionTo.title
+        ? titleToAddOptionTo.title
+        : optionToEdit.title
+          ? optionToEdit.title
+          : '',
+      possibleMatch: titleToAddOptionTo.possibleMatch
+        ? titleToAddOptionTo.possibleMatch
+        : optionToEdit.possibleMatch
           ? optionToEdit.possibleMatch
-          : [],
+          : {},
       content: optionToEdit.option ? optionToEdit.option : '',
       submitCheck: true,
       newTopic: {},
-      cancelSubmit: false
+      cancelSubmit: false,
+      showPossibleMatchForm: !!titleToAddOptionTo
     }
   }
 
   componentDidUpdate (prevProps) {
     if (this.props.optionToEdit !== prevProps.optionToEdit) {
       this.setState({
-        possibleMatch: [],
+        showPossibleMatchForm: false,
+        possibleMatch: {},
         answer: '',
         title: '',
         content: '',
@@ -34,21 +41,6 @@ class AppForm extends React.Component {
       })
       console.log(this.props.optionToEdit)
     }
-  }
-
-  addFuzzyTitle = () => {
-    this.setState({
-      possibleMatch: [...this.state.possibleMatch, { id: uuid(), value: '' }]
-    })
-    console.log(this.state.possibleMatch)
-  }
-
-  removeFuzzyTitle = titleId => {
-    console.log(titleId)
-    const possibleMatch = this.state.possibleMatch.filter(
-      title => title.id !== titleId
-    )
-    this.setState({ possibleMatch })
   }
 
   onTitleInput = e => {
@@ -67,24 +59,23 @@ class AppForm extends React.Component {
     )
   }
 
-  onMatchSearchInput = e => {
-    const id = Number(e.target.id)
-    const possibleMatch = this.state.possibleMatch.map((value, index) =>
-      index === id ? { ...value, value: e.target.value } : value
-    )
-    this.setState({ possibleMatch })
-  }
-
   onFormSubmit = e => {
     e.preventDefault()
     const { title, content, possibleMatch, cancelSubmit } = this.state
-    const { onFormOpen, onAddtitle, optionToEdit, editChange } = this.props
+    const {
+      onFormOpen,
+      onAddtitle,
+      optionToEdit,
+      editChange,
+      titleToAddOptionTo,
+      onAddOptionToTitle
+    } = this.props
 
     if (cancelSubmit) {
       onFormOpen()
     } else if (!title) {
     } else if (!content) {
-    } else if (optionToEdit.id) {
+    } else if (optionToEdit.id && !titleToAddOptionTo.id) {
       const change = {
         title: title,
         titleId: optionToEdit.titleId,
@@ -95,11 +86,21 @@ class AppForm extends React.Component {
         }
       }
       editChange(change)
+    } else if (titleToAddOptionTo.id && !optionToEdit.id) {
+      const option = {
+        ...titleToAddOptionTo,
+        title: title,
+        possibleMatch: possibleMatch,
+        possibleAnswers: {
+          option: content,
+          id: uuid()
+        }
+      }
+      onAddOptionToTitle(option)
     } else {
-      const CheckPossibleMatch = possibleMatch.filter(item => item.value !== '') // get rid off emty possible matches if any
       const newTopic = {
         title,
-        possibleMatch: CheckPossibleMatch,
+        possibleMatch: possibleMatch,
         createdBy: '',
         icon: '',
         image: '',
@@ -121,36 +122,14 @@ class AppForm extends React.Component {
   }
 
   render () {
-    const { title, content, submitCheck, possibleMatch } = this.state
+    const {
+      title,
+      content,
+      submitCheck,
+      showPossibleMatchForm,
+      possibleMatch
+    } = this.state
 
-    const possibleMatches =
-      possibleMatch &&
-      possibleMatch.map((item, index) => {
-        return (
-          <Container key={index}>
-            <Input
-              icon={
-                <Icon
-                  name='minus'
-                  inverted
-                  circular
-                  link
-                  onClick={() => this.removeFuzzyTitle(item.id)}
-                />
-              }
-              fluid
-              label={`match search ${index + 1} / ${
-                this.state.possibleMatch.length
-              }`}
-              placeholder='title...'
-              id={index}
-              type='text'
-              value={item.value}
-              onChange={this.onMatchSearchInput}
-            />
-          </Container>
-        )
-      })
     return (
       <Form onSubmit={this.onFormSubmit}>
         <Form.Input
@@ -162,15 +141,30 @@ class AppForm extends React.Component {
         />
 
         <Popup
-          trigger={<Icon name='plus' onClick={this.addFuzzyTitle} />}
-          content='add fuzzy search'
+          trigger={
+            <Icon
+              name={showPossibleMatchForm ? 'minus' : 'plus'}
+              onClick={() =>
+                this.setState({
+                  showPossibleMatchForm: !showPossibleMatchForm
+                })
+              }
+            />
+          }
+          content="open question's similar terms"
         />
 
-        {possibleMatches}
+        {showPossibleMatchForm && (
+          <Form.TextArea
+            style={{ minHeight: 100 }}
+            label='alternative search terms'
+            value={possibleMatch.value}
+            onChange={this.onContentInput}
+          />
+        )}
 
         <Form.TextArea
           style={{ minHeight: 300 }}
-          label='Suitable answer to this topic'
           placeholder='what is the best way to respond to questions?...'
           value={content}
           onChange={this.onContentInput}
