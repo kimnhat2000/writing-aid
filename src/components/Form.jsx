@@ -6,7 +6,6 @@ class AppForm extends React.Component {
   constructor (props) {
     super(props)
     const { optionToEdit, titleToAddOptionTo } = this.props
-    console.log('from props: ', optionToEdit)
     this.state = {
       answer: '',
       title: titleToAddOptionTo.title

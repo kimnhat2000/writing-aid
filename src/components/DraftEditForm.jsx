@@ -24,7 +24,6 @@ class DraftEditForm extends React.Component {
 
   onFormSubmit = e => {
     e.preventDefault()
-    console.log(this.state)
     const { cancelCliced } = this.state
     if (cancelCliced) {
       this.props.closeForm()

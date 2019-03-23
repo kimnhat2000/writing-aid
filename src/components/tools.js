@@ -256,50 +256,54 @@ export const textEditorDropdownMenu = [
   {
     key: 'createNote',
     text: 'create a note',
-    value: 'createNote',
+    value: 5,
     icon: 'sticky note'
   },
   {
     key: 'exportToDatabase',
     text: 'export to database',
-    value: 'exportToDatabase',
+    value: 4,
     icon: 'database'
   },
   {
     key: 'saveToDraft',
     text: 'send to draft',
-    value: 'saveToDraft',
+    value: 3,
     icon: 'sticky note'
   },
   {
     key: 'load',
     text: 'Load answer',
-    value: 'load',
+    value: 2,
     icon: 'upload'
   },
   {
     key: 'save',
     text: 'Save answer',
-    value: 'save',
+    value: 1,
     icon: 'download'
   }
 ]
 
-export const template = [
+export const dummyTemplateData = [
   {
     id: uuid(),
+    purpose: 'purpose 1',
     content: 'hello',
   },
   {
     id: uuid(),
+    purpose: 'purpose 2',
     content: 'goodbye',
   },
   {
     id: uuid(),
+    purpose: 'purpose 3',
     content: 'ok',
   },
   {
     id: uuid(),
+    purpose: 'purpose 4',
     content: 'fine',
   }
 ]

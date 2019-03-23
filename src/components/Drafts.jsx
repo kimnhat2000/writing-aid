@@ -12,10 +12,6 @@ import copy from 'copy-to-clipboard'
 
 class Drafts extends React.Component {
   constructor (props) {
-    const today = new Date()
-    console.log(
-      today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
-    )
     super(props)
     this.state = {
       drafts: this.props.drafts
@@ -116,12 +112,12 @@ class Drafts extends React.Component {
           {draft.openDraft && (
             <Popup
               trigger={
-                <p
+                <Container
                   onClick={() => this.onDraftClick(draft)}
                   className="break-line"
                 >
                   {draft.draftContent} {index + 1} / {drafts.length}
-                </p>
+                </Container>
               }
               content="copied"
               on="click"
@@ -168,7 +164,7 @@ class Drafts extends React.Component {
           )}
         </Segment>
       ));
-    return <Container>{draftRender}</Container>
+    return <Container className='container-overflow'>{draftRender}</Container>
   }
 }
 

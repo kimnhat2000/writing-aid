@@ -1,6 +1,5 @@
 import React from 'react'
-import { Menu, Dropdown, Icon } from 'semantic-ui-react'
-import MySearch from './Search'
+import { Menu, Dropdown, Icon, Input } from 'semantic-ui-react'
 
 const FunctionMenu = ({
   activeComponent,
@@ -38,9 +37,10 @@ const FunctionMenu = ({
                 Add a title
               </Dropdown.Item>
               <Dropdown.Item>
-                <MySearch
-                  searchData={searchData}
-                  foundDataBeingSentBack={foundDataBeingSentBack}
+                <Input
+                  icon={{ name: 'search', circular: true, link: true }}
+                  placeholder='Search...'
+                  onClick={event => event.stopPropagation()}
                 />
               </Dropdown.Item>
               <Dropdown.Item onClick={() => expandTitles()}>
@@ -57,12 +57,7 @@ const FunctionMenu = ({
         {shownComponentName === 'Drafts' && (
           <Dropdown item text={shownComponentName}>
             <Dropdown.Menu>
-              <Dropdown.Item>
-                <MySearch
-                  searchData={searchData}
-                  foundDataBeingSentBack={foundDataBeingSentBack}
-                />
-              </Dropdown.Item>
+              <Dropdown.Item />
               <Dropdown.Item onClick={() => expandDrafts()}>
                 <Icon name='sort amount down' />
                 Expand all drafts
@@ -78,9 +73,14 @@ const FunctionMenu = ({
           <Dropdown item text={shownComponentName}>
             <Dropdown.Menu>
               <Dropdown.Item>
-                <MySearch
-                  searchData={searchData}
-                  foundDataBeingSentBack={foundDataBeingSentBack}
+                <Icon name='add' />
+                Add a template
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Input
+                  icon={{ name: 'search', circular: true, link: true }}
+                  placeholder='Search...'
+                  onClick={event => event.stopPropagation()}
                 />
               </Dropdown.Item>
               <Dropdown.Item>

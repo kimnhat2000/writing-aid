@@ -23,8 +23,8 @@ const Responses = ({
   onDeleteOptionButtonClick,
   onDeleteTitleShow,
   handleDeleteTitleConfirm,
-  onDeleteTitleClick, clickOnAddOptionToTitle
-
+  onDeleteTitleClick,
+  clickOnAddOptionToTitle
 }) => {
   const render =
     data &&
@@ -37,7 +37,11 @@ const Responses = ({
                 icon={title.collapse ? 'caret square up' : 'caret square down'}
               >
                 <Dropdown.Menu>
-                  <Dropdown.Item icon='add' text='Add option to this title' onClick={() => clickOnAddOptionToTitle(title)}/>
+                  <Dropdown.Item
+                    icon='add'
+                    text='Add option to this title'
+                    onClick={() => clickOnAddOptionToTitle(title)}
+                  />
                   <Dropdown.Item icon='conversation' text='Discussion' />
                   <Dropdown.Item
                     icon='remove'
@@ -142,7 +146,7 @@ const Responses = ({
         </Segment>
       </Container>
     ))
-  return <div>{render}</div>
+  return <Container className='container-overflow'>{render}</Container>
 }
 
 export default Responses

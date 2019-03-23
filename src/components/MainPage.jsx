@@ -1,8 +1,14 @@
 import React from 'react'
 import { Container, Header, Grid, Icon, Segment } from 'semantic-ui-react'
 import copy from 'copy-to-clipboard'
+import uuid from 'uuid'
 
-import { dummyData, mainDropdownMenu, dummyDraftData } from './tools'
+import {
+  dummyData,
+  mainDropdownMenu,
+  dummyDraftData,
+  dummyTemplateData
+} from './tools'
 import Responses from './Responses'
 import TextEditor from './TextEditor'
 import AppForm from './Form'
@@ -14,6 +20,10 @@ import Templates from './Templates'
 
 import Test from './Test'
 
+const today = new Date()
+const createdAt =
+  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+
 class WritingAidMain extends React.Component {
   constructor (props) {
     super(props)
@@ -23,16 +33,16 @@ class WritingAidMain extends React.Component {
       onDeleteTitleShow: false,
       onConfirm: false,
       onFormOpen: false,
-      activeComponent: 'Templates',
+      activeComponent: 'Drafts',
       mainMenuItem: mainDropdownMenu,
-      questionExpansion: false,
-      timerClick: false,
       optionToEdit: {},
       showTextEditor: true,
       drafts: dummyDraftData,
       openDraftForm: false,
       titleToAddOptionTo: {},
-      draftToEdit: {}
+      draftToEdit: {},
+      templatesData: dummyTemplateData,
+      draftInfo: {}
     }
   }
 
@@ -202,14 +212,14 @@ class WritingAidMain extends React.Component {
       onFormOpen,
       activeComponent,
       mainMenuItem,
-      timerClick,
-      questionExpansion,
       optionToEdit,
       drafts,
       openDraftForm,
       showTextEditor,
       titleToAddOptionTo,
-      draftToEdit
+      draftToEdit,
+      templatesData,
+      draftInfo
     } = this.state
     return (
       <Container>
@@ -336,15 +346,14 @@ class WritingAidMain extends React.Component {
                 />
               )}
 
-              {activeComponent === 'Templates' &&
-                  <Templates/>
-              }
+              {activeComponent === 'Templates' && (
+                <Templates templatesData={templatesData} />
+              )}
             </Segment>
             <QuestionRender
-              questionExpansionClick={() =>
-                this.setState({ questionExpansion: !questionExpansion })
-              }
-              questionExpansion={questionExpansion}
+              questionInfo={questionInfo =>
+                this.setState(
+                  { draftInfo: { ...draftInfo, ...questionInfo } })}
             />
           </Grid.Column>
           <Grid.Column width={10}>
@@ -358,9 +367,8 @@ class WritingAidMain extends React.Component {
                   })
                 }
                 onAddtitle={newTitle =>
-                  this.setState({ data: [{...newTitle, collapse: true}, ...data] }, () =>
-                    console.log(data)
-                  )
+                  this.setState(
+                    { data: [{ ...newTitle, collapse: true }, ...data] })
                 }
                 optionToEdit={optionToEdit}
                 titleToAddOptionTo={titleToAddOptionTo}
@@ -385,8 +393,20 @@ class WritingAidMain extends React.Component {
 
             {showTextEditor && (
               <TextEditor
-                onTimerClick={() => this.setState({ timerClick: !timerClick })}
-                startTimer={timerClick}
+                senToDraft={()=>this.sendTextToDraft}
+                draftInfo={(writingTime, draftContent) =>
+                  this.setState(
+                    {
+                      draftInfo: {
+                        ...draftInfo,
+                        writingTime,
+                        draftContent,
+                        createdAt,
+                        draftId: uuid()
+                      }
+                    })                  
+                }
+                test={draftInfo}
               />
             )}
           </Grid.Column>

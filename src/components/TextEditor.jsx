@@ -1,40 +1,44 @@
 import React from 'react'
-import {
-  TextArea,
-  Form,
-  Container,
-  Dropdown,
-  Icon,
-
-} from 'semantic-ui-react'
+import { TextArea, Form, Container, Dropdown, Icon } from 'semantic-ui-react'
 
 import Timer from './Timer'
-import {textEditorDropdownMenu} from './tools'
+import { textEditorDropdownMenu } from './tools'
+
+const defaultState = {
+  content: '',
+  timeRecord: '',
+  record: false
+}
 
 class TextEditor extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      selectedContent: ''
-    }
+    this.state = defaultState
   }
 
   onContentChange = e => {
-    this.setState({ selectedContent: e.target.value })
+    this.setState({ content: e.target.value })
+  }
+
+  onselectAnAction = value => {
+    const { timeRecord, content } = this.state
+    if (value === 3) {
+      this.setState({record: true}, console.log(this.props.test))
+      this.props.draftInfo(timeRecord, content)
+    }
   }
 
   render () {
-    const { selectedContent } = this.state
-    const { onTimerClick, startTimer } = this.props
-
+    const { content, record } = this.state
     return (
       <Container>
+      
         <Form>
           <TextArea
             className='break-line'
             placeholder='start writing here'
-            style={{ minHeight: 550 }}
-            value={selectedContent}
+            style={{ minHeight: 450 }}
+            value={content}
             onChange={this.onContentChange}
           />
         </Form>
@@ -46,9 +50,23 @@ class TextEditor extends React.Component {
                 <Icon name='user' /> Hello, Nhat
               </span>
             }
-            options={textEditorDropdownMenu}
+          >
+            <Dropdown.Menu>
+              {textEditorDropdownMenu.map(item => (
+                <Dropdown.Item
+                  key={item.value}
+                  {...item}
+                  onClick={() => this.onselectAnAction(item.value)}
+                />
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+          <Timer
+            recordTime={timeRecord =>
+              this.setState({ timeRecord, record: false })
+            }
+            record={record}
           />
-          <Timer onTimerClick={onTimerClick} startTimer={startTimer} />
         </Container>
       </Container>
     )
