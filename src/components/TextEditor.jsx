@@ -23,8 +23,13 @@ class TextEditor extends React.Component {
   onselectAnAction = value => {
     const { timeRecord, content } = this.state
     if (value === 3) {
-      this.setState({record: true}, console.log(this.props.test))
-      this.props.draftInfo(timeRecord, content)
+      if (!content) {
+
+      } else {
+        this.setState({ record: true })
+        this.props.addTextToDraft(timeRecord, content)
+        this.setState({ content: '' })
+      }
     }
   }
 
@@ -32,12 +37,11 @@ class TextEditor extends React.Component {
     const { content, record } = this.state
     return (
       <Container>
-      
         <Form>
           <TextArea
             className='break-line'
             placeholder='start writing here'
-            style={{ minHeight: 450 }}
+            style={{ minHeight: 550 }}
             value={content}
             onChange={this.onContentChange}
           />

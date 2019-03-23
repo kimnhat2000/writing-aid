@@ -7,7 +7,8 @@ import {
   dummyData,
   mainDropdownMenu,
   dummyDraftData,
-  dummyTemplateData
+  dummyTemplateData,
+  dummyDraftDataDefault
 } from './tools'
 import Responses from './Responses'
 import TextEditor from './TextEditor'
@@ -42,7 +43,8 @@ class WritingAidMain extends React.Component {
       titleToAddOptionTo: {},
       draftToEdit: {},
       templatesData: dummyTemplateData,
-      draftInfo: {}
+      draftInfo: {},
+      questionInfo: {}
     }
   }
 
@@ -204,6 +206,19 @@ class WritingAidMain extends React.Component {
     })
   }
 
+  addTextToDraft = (writingTime, draftContent) => {
+    const draftInfo = {
+      ...dummyDraftDataDefault,
+      ...this.state.questionInfo,
+      writingTime,
+      draftContent,
+      createdAt,
+      draftId: uuid()
+    }
+    const drafts = [draftInfo, ...this.state.drafts]
+    this.setState({ drafts })
+  }
+
   render () {
     const {
       data,
@@ -218,8 +233,7 @@ class WritingAidMain extends React.Component {
       showTextEditor,
       titleToAddOptionTo,
       draftToEdit,
-      templatesData,
-      draftInfo
+      templatesData
     } = this.state
     return (
       <Container>
@@ -322,7 +336,10 @@ class WritingAidMain extends React.Component {
                     this.setState({ onConfirmShow: true })
                   }
                   deleteDraftButtonConfirm={drafts => {
-                    this.setState({ drafts, onConfirmShow: false })
+                    this.setState({
+                      drafts, onConfirmShow: false, onFormOpen: false,
+                      showTextEditor: true,
+                      openDraftForm: false})
                   }}
                   cancelButton={() => this.setState({ onConfirmShow: false })}
                   onConfirmShow={onConfirmShow}
@@ -351,9 +368,7 @@ class WritingAidMain extends React.Component {
               )}
             </Segment>
             <QuestionRender
-              questionInfo={questionInfo =>
-                this.setState(
-                  { draftInfo: { ...draftInfo, ...questionInfo } })}
+              questionInfo={questionInfo => this.setState({ questionInfo })}
             />
           </Grid.Column>
           <Grid.Column width={10}>
@@ -367,8 +382,9 @@ class WritingAidMain extends React.Component {
                   })
                 }
                 onAddtitle={newTitle =>
-                  this.setState(
-                    { data: [{ ...newTitle, collapse: true }, ...data] })
+                  this.setState({
+                    data: [{ ...newTitle, collapse: true }, ...data]
+                  })
                 }
                 optionToEdit={optionToEdit}
                 titleToAddOptionTo={titleToAddOptionTo}
@@ -393,20 +409,10 @@ class WritingAidMain extends React.Component {
 
             {showTextEditor && (
               <TextEditor
-                senToDraft={()=>this.sendTextToDraft}
-                draftInfo={(writingTime, draftContent) =>
-                  this.setState(
-                    {
-                      draftInfo: {
-                        ...draftInfo,
-                        writingTime,
-                        draftContent,
-                        createdAt,
-                        draftId: uuid()
-                      }
-                    })                  
+                senToDraft={() => this.sendTextToDraft}
+                addTextToDraft={(writingTime, draftContent) =>
+                  this.addTextToDraft(writingTime, draftContent)
                 }
-                test={draftInfo}
               />
             )}
           </Grid.Column>

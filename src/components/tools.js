@@ -132,6 +132,23 @@ export const dummyData = [
   }
 ]
 
+export const dummyDraftDataDefault = {
+  customer: '',
+  showHeaderInfo: false,
+  link: '',
+  draftId: uuid(),
+  openDraft: false,
+  draftClick: false,
+  createdAt: '',
+  writingTime: '',
+  question: {
+    open: false,
+    questionContent: ''
+  },
+  note: '',
+  draftContent: ''
+}
+
 export const dummyDraftData = [
   {
     customer: 'customer 1',
@@ -289,21 +306,21 @@ export const dummyTemplateData = [
   {
     id: uuid(),
     purpose: 'purpose 1',
-    content: 'hello',
+    content: 'hello'
   },
   {
     id: uuid(),
     purpose: 'purpose 2',
-    content: 'goodbye',
+    content: 'goodbye'
   },
   {
     id: uuid(),
     purpose: 'purpose 3',
-    content: 'ok',
+    content: 'ok'
   },
   {
     id: uuid(),
     purpose: 'purpose 4',
-    content: 'fine',
+    content: 'fine'
   }
 ]
