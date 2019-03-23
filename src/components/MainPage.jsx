@@ -10,6 +10,7 @@ import FunctionMenu from './FunctionMenu'
 import QuestionRender from './Question'
 import Drafts from './Drafts'
 import DraftEditForm from './DraftEditForm'
+import Templates from './Templates'
 
 import Test from './Test'
 
@@ -22,7 +23,7 @@ class WritingAidMain extends React.Component {
       onDeleteTitleShow: false,
       onConfirm: false,
       onFormOpen: false,
-      activeComponent: 'Responses',
+      activeComponent: 'Templates',
       mainMenuItem: mainDropdownMenu,
       questionExpansion: false,
       timerClick: false,
@@ -30,7 +31,8 @@ class WritingAidMain extends React.Component {
       showTextEditor: true,
       drafts: dummyDraftData,
       openDraftForm: false,
-      titleToAddOptionTo: {}
+      titleToAddOptionTo: {},
+      draftToEdit: {}
     }
   }
 
@@ -57,12 +59,11 @@ class WritingAidMain extends React.Component {
       title.id === option.id
         ? {
           ...title,
-          possibleAnswers: [option.possibleAnswers, ...title.possibleAnswers], collapse: true
-
+          possibleAnswers: [option.possibleAnswers, ...title.possibleAnswers],
+          collapse: true
         }
         : title
     )
-    console.log('added option: ', data[0])
     this.setState({ data, onFormOpen: false, showTextEditor: true })
   }
 
@@ -72,7 +73,6 @@ class WritingAidMain extends React.Component {
   }
 
   onOptionClick = (d, i) => {
-    console.log(this.state.data)
     const data = this.state.data.map(item =>
       item.id === i
         ? {
@@ -106,21 +106,18 @@ class WritingAidMain extends React.Component {
     const optionToEdit = filterTitleContentsOption[0].possibleAnswers.filter(
       option => option.selected === true
     )
-    this.setState(
-      {
-        onFormOpen: !onFormOpen,
-        showTextEditor: onFormOpen,
-        titleToAddOptionTo: {},
-        openDraftForm: onFormOpen && false,
-        optionToEdit: {
-          ...optionToEdit[0],
-          title: filterTitleContentsOption[0].title,
-          possibleMatch: filterTitleContentsOption[0].possibleMatch,
-          titleId
-        }
-      },
-      () => console.log('showTextEditor: ', this.state.showTextEditor)
-    )
+    this.setState({
+      onFormOpen: !onFormOpen,
+      showTextEditor: onFormOpen,
+      titleToAddOptionTo: {},
+      openDraftForm: onFormOpen && false,
+      optionToEdit: {
+        ...optionToEdit[0],
+        title: filterTitleContentsOption[0].title,
+        possibleMatch: filterTitleContentsOption[0].possibleMatch,
+        titleId
+      }
+    })
   }
 
   editChange = change => {
@@ -153,6 +150,15 @@ class WritingAidMain extends React.Component {
     })
   }
 
+  editDraftButtonClick = draft => {
+    this.setState({
+      onFormOpen: false,
+      showTextEditor: this.state.openDraftForm,
+      openDraftForm: !this.state.openDraftForm,
+      draftToEdit: draft
+    })
+  }
+
   handleConfirm = (optionId, titleId) => {
     const data = this.state.data.map(item =>
       item.id === titleId
@@ -164,12 +170,27 @@ class WritingAidMain extends React.Component {
         }
         : item
     )
-    console.log('clicked: ', optionId, 'titleID:', titleId, data)
     this.setState({
       data,
       onConfirmShow: false,
       onDeleteTitleShow: false,
       onFormOpen: false
+    })
+  }
+
+  editedDraft = newDraft => {
+    const drafts =
+      this.state.drafts &&
+      this.state.drafts.map(draft =>
+        draft.draftId === newDraft.draftId
+          ? { ...draft, draftContent: newDraft.content }
+          : draft
+      )
+    this.setState({
+      drafts,
+      onFormOpen: false,
+      showTextEditor: true,
+      openDraftForm: false
     })
   }
 
@@ -187,7 +208,8 @@ class WritingAidMain extends React.Component {
       drafts,
       openDraftForm,
       showTextEditor,
-      titleToAddOptionTo
+      titleToAddOptionTo,
+      draftToEdit
     } = this.state
     return (
       <Container>
@@ -251,7 +273,7 @@ class WritingAidMain extends React.Component {
                 }
               />
 
-              {activeComponent === 'Public' && <DraftEditForm />}
+              {activeComponent === 'Public' && <Test />}
 
               {activeComponent === 'Responses' && (
                 <Responses
@@ -285,13 +307,7 @@ class WritingAidMain extends React.Component {
                 <Drafts
                   drafts={drafts}
                   openDraftForm={openDraftForm}
-                  editDraftButtonClick={() =>
-                    this.setState({
-                      onFormOpen: false,
-                      showTextEditor: openDraftForm,
-                      openDraftForm: !openDraftForm
-                    })
-                  }
+                  editDraftButtonClick={this.editDraftButtonClick}
                   deleteOptionButtonClick={() =>
                     this.setState({ onConfirmShow: true })
                   }
@@ -319,6 +335,10 @@ class WritingAidMain extends React.Component {
                   onOpenQuestion={drafts => this.setState({ drafts })}
                 />
               )}
+
+              {activeComponent === 'Templates' &&
+                  <Templates/>
+              }
             </Segment>
             <QuestionRender
               questionExpansionClick={() =>
@@ -330,7 +350,7 @@ class WritingAidMain extends React.Component {
           <Grid.Column width={10}>
             {onFormOpen && (
               <AppForm
-                onFormOpen={() =>
+                onFormClose={() =>
                   this.setState({
                     onFormOpen: false,
                     showTextEditor: true,
@@ -338,7 +358,7 @@ class WritingAidMain extends React.Component {
                   })
                 }
                 onAddtitle={newTitle =>
-                  this.setState({ data: [newTitle, ...data] }, () =>
+                  this.setState({ data: [{...newTitle, collapse: true}, ...data] }, () =>
                     console.log(data)
                   )
                 }
@@ -349,7 +369,19 @@ class WritingAidMain extends React.Component {
               />
             )}
 
-            {openDraftForm && <DraftEditForm />}
+            {openDraftForm && (
+              <DraftEditForm
+                draftToEdit={draftToEdit}
+                closeForm={() =>
+                  this.setState({
+                    openDraftForm: false,
+                    showTextEditor: true,
+                    onFormOpen: false
+                  })
+                }
+                editedDraft={this.editedDraft}
+              />
+            )}
 
             {showTextEditor && (
               <TextEditor

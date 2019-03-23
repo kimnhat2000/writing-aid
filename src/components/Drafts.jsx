@@ -5,7 +5,8 @@ import {
   Container,
   Icon,
   Popup,
-  Confirm
+  Confirm,
+  List
 } from 'semantic-ui-react'
 import copy from 'copy-to-clipboard'
 
@@ -44,10 +45,6 @@ class Drafts extends React.Component {
     copy(draft.draftContent)
   }
 
-  onEditDraftClick = draftId => {
-    this.props.editDraftButtonClick()
-  }
-
   onDeleteDraft = draftId => {
     const drafts =
       this.props.drafts &&
@@ -77,76 +74,91 @@ class Drafts extends React.Component {
     const draftRender =
       drafts &&
       drafts.map((draft, index) => (
-        <Segment key={index} className='title'>
-          <Header as='h4' dividing>
-            <Icon name='firstdraft' />
+        <Segment key={index} className="title">
+          <Header as="h4" dividing>
             <Header.Content onClick={() => this.showDrafts(draft.draftId)}>
               {draft.customer
                 ? `Draft in response for ${draft.customer} question`
                 : `no customer name`}
               <Header.Subheader>
-                <a
-                  href={`https://${draft.link}`}
-                  rel='noopener noreferrer'
-                  target='_blank'
-                >
-                  {draft.link}
-                </a>
+                <List horizontal>
+                  <List.Item>
+                    <List.Icon name="linkify" />
+                    <a
+                      href={`https://${draft.link}`}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {draft.link}
+                    </a>
+                  </List.Item>
+                  <List.Item>
+                    <List.Icon name="calendar outline" />
+                    {draft.createdAt}
+                  </List.Item>
+                  <List.Item>
+                    <List.Icon name="clock outline" />
+                    {draft.writingTime}
+                  </List.Item>
+                </List>
               </Header.Subheader>
-              <Header.Subheader>{draft.createdAt}</Header.Subheader>
-              <Header.Subheader>Written in {draft.writingTime}</Header.Subheader>
             </Header.Content>
             <p onClick={() => this.openQuestion(draft.draftId)}>
               {draft.question.open ? (
-                <span>{draft.question.questionContent}</span>
+                <span className="break-line">
+                  {draft.question.questionContent}
+                </span>
               ) : (
-                <Icon name='question' />
+                <Icon name="question" />
               )}
             </p>
           </Header>
           {draft.openDraft && (
             <Popup
               trigger={
-                <p onClick={() => this.onDraftClick(draft)}>
+                <p
+                  onClick={() => this.onDraftClick(draft)}
+                  className="break-line"
+                >
                   {draft.draftContent} {index + 1} / {drafts.length}
                 </p>
               }
-              content='copied'
-              on='click'
+              content="copied"
+              on="click"
               hideOnScroll
             />
           )}
           {draft.draftClick && (
             <Container>
               <Popup
-                trigger={<Icon name='check' color='green' />}
-                content='draft copied'
+                trigger={<Icon name="check" color="green" />}
+                content="draft copied"
               />
               <Popup
                 trigger={
                   <Icon
-                    name='edit'
-                    color={this.props.openDraftForm ? 'grey' : 'blue'}
-                    onClick={() => this.onEditDraftClick(draft)}
+                    name="edit"
+                    color={this.props.openDraftForm ? "grey" : "blue"}
+                    onClick={() => this.props.editDraftButtonClick(draft)}
                   />
                 }
-                content='edit this draft'
+                content="edit this draft"
               />
               <Popup
                 trigger={
                   <Icon
-                    name='delete'
-                    color='red'
+                    name="delete"
+                    color="red"
                     onClick={deleteOptionButtonClick}
                   />
                 }
-                content='delete this draft'
+                content="delete this draft"
               />
               {onConfirmShow && (
                 <Confirm
                   open={onConfirmShow}
-                  content='are you sure you want to delete this item?'
-                  cancelButton='Never mind'
+                  content="are you sure you want to delete this item?"
+                  cancelButton="Never mind"
                   confirmButton="Let's do it"
                   onCancel={() => cancelButton()}
                   onConfirm={() => this.onDeleteDraft(draft.draftId)}
@@ -155,7 +167,7 @@ class Drafts extends React.Component {
             </Container>
           )}
         </Segment>
-      ))
+      ));
     return <Container>{draftRender}</Container>
   }
 }

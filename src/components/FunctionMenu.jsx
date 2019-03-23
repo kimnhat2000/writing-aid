@@ -74,6 +74,26 @@ const FunctionMenu = ({
             </Dropdown.Menu>
           </Dropdown>
         )}
+        {shownComponentName === 'Templates' && (
+          <Dropdown item text={shownComponentName}>
+            <Dropdown.Menu>
+              <Dropdown.Item>
+                <MySearch
+                  searchData={searchData}
+                  foundDataBeingSentBack={foundDataBeingSentBack}
+                />
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Icon name='sort amount down' />
+                Expand all templates
+              </Dropdown.Item>
+              <Dropdown.Item>
+                <Icon name='sort amount up' />
+                Collapse all templates
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
       </Menu.Menu>
     </Menu>
   )

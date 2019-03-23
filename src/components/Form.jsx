@@ -1,12 +1,12 @@
 import React from 'react'
-import { Form, Icon, Popup, Container, Input, Button } from 'semantic-ui-react'
+import { Form, Icon, Popup, Button } from 'semantic-ui-react'
 import uuid from 'uuid'
 
 class AppForm extends React.Component {
   constructor (props) {
     super(props)
     const { optionToEdit, titleToAddOptionTo } = this.props
-    console.log('from props: ', titleToAddOptionTo.id)
+    console.log('from props: ', optionToEdit)
     this.state = {
       answer: '',
       title: titleToAddOptionTo.title
@@ -18,9 +18,9 @@ class AppForm extends React.Component {
         ? titleToAddOptionTo.possibleMatch
         : optionToEdit.possibleMatch
           ? optionToEdit.possibleMatch
-          : {},
+          : '',
       content: optionToEdit.option ? optionToEdit.option : '',
-      submitCheck: true,
+      submitCheck: titleToAddOptionTo.id || optionToEdit.id ? false : true,
       newTopic: {},
       cancelSubmit: false,
       showPossibleMatchForm: !!titleToAddOptionTo
@@ -31,39 +31,28 @@ class AppForm extends React.Component {
     if (this.props.optionToEdit !== prevProps.optionToEdit) {
       this.setState({
         showPossibleMatchForm: false,
-        possibleMatch: {},
+        possibleMatch: '',
         answer: '',
         title: '',
         content: '',
-        submitCheck: true,
+        submitCheck: false,
         newTopic: {},
-        cancelSubmit: false
       })
-      console.log(this.props.optionToEdit)
     }
   }
 
-  onTitleInput = e => {
-    this.setState({ title: e.target.value }, () =>
+  handleInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value }, () =>
       this.state.title === '' || this.state.content === ''
         ? this.setState({ submitCheck: true })
-        : this.setState({ submitCheck: false })
-    )
-  }
-
-  onContentInput = e => {
-    this.setState({ content: e.target.value }, () =>
-      this.state.content === '' || this.state.title === ''
-        ? this.setState({ submitCheck: true })
-        : this.setState({ submitCheck: false })
-    )
+        : this.setState({ submitCheck: false }))
   }
 
   onFormSubmit = e => {
     e.preventDefault()
     const { title, content, possibleMatch, cancelSubmit } = this.state
     const {
-      onFormOpen,
+      onFormClose,
       onAddtitle,
       optionToEdit,
       editChange,
@@ -72,7 +61,7 @@ class AppForm extends React.Component {
     } = this.props
 
     if (cancelSubmit) {
-      onFormOpen()
+      onFormClose()
     } else if (!title) {
     } else if (!content) {
     } else if (optionToEdit.id && !titleToAddOptionTo.id) {
@@ -116,7 +105,7 @@ class AppForm extends React.Component {
         id: uuid()
       }
       this.setState({ submitCheck: false })
-      onFormOpen()
+      onFormClose()
       onAddtitle(newTopic)
     }
   }
@@ -134,10 +123,11 @@ class AppForm extends React.Component {
       <Form onSubmit={this.onFormSubmit}>
         <Form.Input
           fluid
+          name='title'
           label='Title'
           placeholder='title...'
           value={title}
-          onChange={this.onTitleInput}
+          onChange={this.handleInputChange}
         />
 
         <Popup
@@ -157,17 +147,19 @@ class AppForm extends React.Component {
         {showPossibleMatchForm && (
           <Form.TextArea
             style={{ minHeight: 100 }}
+            name='possibleMatch'
             label='alternative search terms'
-            value={possibleMatch.value}
-            onChange={this.onContentInput}
+            value={possibleMatch}
+            onChange={this.handleInputChange}
           />
         )}
 
         <Form.TextArea
           style={{ minHeight: 300 }}
+          name='content'
           placeholder='what is the best way to respond to questions?...'
           value={content}
-          onChange={this.onContentInput}
+          onChange={this.handleInputChange}
         />
         <Button.Group size='mini' floated='right'>
           {submitCheck ? (

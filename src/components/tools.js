@@ -3,11 +3,7 @@ import uuid from 'uuid'
 export const dummyData = [
   {
     title: 'Occaecat sint aliquip tempor laborum.',
-    possibleMatch: 
-      {
-        id: uuid(),
-        value: 'Et est duis adipisicing sint non elit est Lorem commodo.'
-      },
+    possibleMatch: 'Et est duis adipisicing sint non elit est Lorem commodo.',
     createdBy: 'abc',
     icon: '',
     image: '',
@@ -39,7 +35,7 @@ export const dummyData = [
   },
   {
     title: 'Deserunt commodo Lorem aute esse.',
-    possibleMatch: [],
+    possibleMatch: '',
     createdBy: 'zyz',
     icon: '',
     image: '',
@@ -71,7 +67,7 @@ export const dummyData = [
   },
   {
     title: 'Deserunt commodo Lorem aute esse.',
-    possibleMatch: [],
+    possibleMatch: '',
     createdBy: 'zyz',
     icon: '',
     image: '',
@@ -104,7 +100,7 @@ export const dummyData = [
   {
     title:
       'Esse exercitation sit incididunt in laborum esse excepteur reprehenderit.',
-    possibleMatch: [],
+    possibleMatch: '',
     createdBy: 'obc',
     icon: '',
     image: '',
@@ -137,12 +133,112 @@ export const dummyData = [
 ]
 
 export const dummyDraftData = [
-{customer: 'customer 1', showHeaderInfo:false, link:'www.google.com', draftId: uuid(), openDraft: false, draftClick: false, createdAt: '18/03/2019', writingTime:'20mins', question:{open:false, questionContent:'Irure culpa tempor excepteur aute.'}, draftContent:'1Culpa velit Lorem cupidatat cupidatat. In ullamco ea deserunt esse laborum magna officia esse velit in. Adipisicing elit amet in et aliqua. Est non cupidatat nulla magna officia voluptate sit consequat magna. Id cupidatat tempor fugiat labore commodo Lorem in sint aliquip. Nisi exercitation velit et velit sit eu.'},
-{customer: 'customer 2', showHeaderInfo:false, link:'www.google.com', draftId: uuid(), openDraft: false, draftClick: false, createdAt: '18/03/2019', writingTime:'20mins', question:{open:false, questionContent:'Magna aliqua aliqua fugiat exercitation dolore esse.'}, draftContent:'2Tempor exercitation consequat nostrud nulla id commodo laboris. Duis eu officia veniam excepteur voluptate pariatur amet laborum tempor exercitation deserunt commodo. Consequat ad aliqua cillum culpa. Amet voluptate tempor nulla Lorem voluptate elit consequat ullamco Lorem laborum enim. Occaecat magna dolore velit proident excepteur.'},
-{customer: 'customer 3', showHeaderInfo:false, link:'www.google.com', draftId: uuid(), openDraft: false, draftClick: false, createdAt: '18/03/2019', writingTime:'20mins', question:{open:false, questionContent:'Mollit incididunt labore enim irure sunt labore reprehenderit officia ut eu occaecat aliquip culpa officia.'}, draftContent:'3Voluptate sint consequat est laborum anim ex magna amet. Qui ad cupidatat deserunt ea laborum eu minim in cillum fugiat irure nisi excepteur fugiat. In Lorem veniam dolor excepteur excepteur culpa tempor Lorem in proident nostrud nisi cupidatat. Minim nostrud culpa qui velit culpa officia. Duis incididunt esse esse consequat laboris. Sint ad sit eiusmod ullamco officia amet voluptate occaecat Lorem duis.'},
-{customer: 'customer 4', showHeaderInfo:false, link:'www.google.com', draftId: uuid(), openDraft: false, draftClick: false, createdAt: '18/03/2019', writingTime:'20mins', question:{open:false, questionContent:'Sunt tempor dolor labore incididunt ex irure irure veniam exercitation ad.'}, draftContent:'4Reprehenderit fugiat nostrud qui nulla in Lorem elit deserunt officia veniam ex dolore occaecat ea. Nisi irure commodo ex incididunt non magna nulla excepteur cupidatat. Elit proident enim quis laborum adipisicing tempor culpa. Cupidatat minim dolore elit est laborum. Minim consequat do do eu. Anim eu elit ad incididunt sint incididunt non. Fugiat aliqua deserunt aute esse deserunt irure reprehenderit nostrud qui qui in Lorem excepteur.'},
-{customer: 'customer 5', showHeaderInfo:false, link:'www.google.com', draftId: uuid(), openDraft: false, draftClick: false, createdAt: '18/03/2019', writingTime:'20mins', question:{open:false, questionContent:'Irure amet mollit nisi consectetur laborum dolor eiusmod est irure non Lorem do tempor.'}, draftContent:'5Elit labore irure occaecat culpa excepteur eiusmod ipsum cillum esse ipsum irure. Ex culpa irure esse nostrud minim reprehenderit amet eiusmod ad voluptate cillum occaecat. Est quis non laborum ea dolor fugiat est eu nostrud pariatur ut. Est labore ex ipsum labore excepteur id proident duis laboris. Eiusmod quis magna est excepteur cillum sit occaecat eiusmod consequat. Anim ullamco velit aliquip esse aliquip. Ad laboris aliqua exercitation cillum.'},
-{customer: 'customer 6', showHeaderInfo:false, link:'www.google.com', draftId: uuid(), openDraft: false, draftClick: false, createdAt: '18/03/2019', writingTime:'20mins', question:{open:false, questionContent:'Excepteur esse magna commodo sint in id nostrud tempor eiusmod sit consectetur.'}, draftContent:'6Consectetur et eu laborum incididunt ex culpa velit. Enim amet non culpa excepteur mollit esse nulla ipsum irure minim Lorem. Consequat sit ut id anim exercitation duis esse esse laborum deserunt. Excepteur labore excepteur Lorem Lorem culpa cillum ex non. Anim Lorem ad incididunt aliqua dolor sit sit id. Nulla cillum enim ex reprehenderit amet sint Lorem dolore. Sint aute esse non aute aliquip laboris.'},
+  {
+    customer: 'customer 1',
+    showHeaderInfo: false,
+    link: 'www.google.com',
+    draftId: uuid(),
+    openDraft: false,
+    draftClick: false,
+    createdAt: '18/03/2019',
+    writingTime: '20mins',
+    question: {
+      open: false,
+      questionContent: 'Irure culpa tempor excepteur aute.'
+    },
+    note: 'note 1',
+    draftContent:
+      '1Culpa velit Lorem cupidatat cupidatat. In ullamco ea deserunt esse laborum magna officia esse velit in. Adipisicing elit amet in et aliqua. Est non cupidatat nulla magna officia voluptate sit consequat magna. Id cupidatat tempor fugiat labore commodo Lorem in sint aliquip. Nisi exercitation velit et velit sit eu.'
+  },
+  {
+    customer: 'customer 2',
+    showHeaderInfo: false,
+    link: 'www.google.com',
+    draftId: uuid(),
+    openDraft: false,
+    draftClick: false,
+    createdAt: '18/03/2019',
+    writingTime: '20mins',
+    question: {
+      open: false,
+      questionContent: 'Magna aliqua aliqua fugiat exercitation dolore esse.'
+    },
+    note: '',
+    draftContent:
+      '2Tempor exercitation consequat nostrud nulla id commodo laboris. Duis eu officia veniam excepteur voluptate pariatur amet laborum tempor exercitation deserunt commodo. Consequat ad aliqua cillum culpa. Amet voluptate tempor nulla Lorem voluptate elit consequat ullamco Lorem laborum enim. Occaecat magna dolore velit proident excepteur.'
+  },
+  {
+    customer: 'customer 3',
+    showHeaderInfo: false,
+    link: 'www.google.com',
+    draftId: uuid(),
+    openDraft: false,
+    draftClick: false,
+    createdAt: '18/03/2019',
+    writingTime: '20mins',
+    question: {
+      open: false,
+      questionContent:
+        'Mollit incididunt labore enim irure sunt labore reprehenderit officia ut eu occaecat aliquip culpa officia.'
+    },
+    note: '',
+    draftContent:
+      '3Voluptate sint consequat est laborum anim ex magna amet. Qui ad cupidatat deserunt ea laborum eu minim in cillum fugiat irure nisi excepteur fugiat. In Lorem veniam dolor excepteur excepteur culpa tempor Lorem in proident nostrud nisi cupidatat. Minim nostrud culpa qui velit culpa officia. Duis incididunt esse esse consequat laboris. Sint ad sit eiusmod ullamco officia amet voluptate occaecat Lorem duis.'
+  },
+  {
+    customer: 'customer 4',
+    showHeaderInfo: false,
+    link: 'www.google.com',
+    draftId: uuid(),
+    openDraft: false,
+    draftClick: false,
+    createdAt: '18/03/2019',
+    writingTime: '20mins',
+    question: {
+      open: false,
+      questionContent:
+        'Sunt tempor dolor labore incididunt ex irure irure veniam exercitation ad.'
+    },
+    note: '',
+    draftContent:
+      '4Reprehenderit fugiat nostrud qui nulla in Lorem elit deserunt officia veniam ex dolore occaecat ea. Nisi irure commodo ex incididunt non magna nulla excepteur cupidatat. Elit proident enim quis laborum adipisicing tempor culpa. Cupidatat minim dolore elit est laborum. Minim consequat do do eu. Anim eu elit ad incididunt sint incididunt non. Fugiat aliqua deserunt aute esse deserunt irure reprehenderit nostrud qui qui in Lorem excepteur.'
+  },
+  {
+    customer: 'customer 5',
+    showHeaderInfo: false,
+    link: 'www.google.com',
+    draftId: uuid(),
+    openDraft: false,
+    draftClick: false,
+    createdAt: '18/03/2019',
+    writingTime: '20mins',
+    question: {
+      open: false,
+      questionContent:
+        'Irure amet mollit nisi consectetur laborum dolor eiusmod est irure non Lorem do tempor.'
+    },
+    note: '',
+    draftContent:
+      '5Elit labore irure occaecat culpa excepteur eiusmod ipsum cillum esse ipsum irure. Ex culpa irure esse nostrud minim reprehenderit amet eiusmod ad voluptate cillum occaecat. Est quis non laborum ea dolor fugiat est eu nostrud pariatur ut. Est labore ex ipsum labore excepteur id proident duis laboris. Eiusmod quis magna est excepteur cillum sit occaecat eiusmod consequat. Anim ullamco velit aliquip esse aliquip. Ad laboris aliqua exercitation cillum.'
+  },
+  {
+    customer: 'customer 6',
+    showHeaderInfo: false,
+    link: 'www.google.com',
+    draftId: uuid(),
+    openDraft: false,
+    draftClick: false,
+    createdAt: '18/03/2019',
+    writingTime: '20mins',
+    question: {
+      open: false,
+      questionContent:
+        'Excepteur esse magna commodo sint in id nostrud tempor eiusmod sit consectetur.'
+    },
+    note: '',
+    draftContent:
+      '6Consectetur et eu laborum incididunt ex culpa velit. Enim amet non culpa excepteur mollit esse nulla ipsum irure minim Lorem. Consequat sit ut id anim exercitation duis esse esse laborum deserunt. Excepteur labore excepteur Lorem Lorem culpa cillum ex non. Anim Lorem ad incididunt aliqua dolor sit sit id. Nulla cillum enim ex reprehenderit amet sint Lorem dolore. Sint aute esse non aute aliquip laboris.'
+  }
 ]
 
 export const mainDropdownMenu = [
@@ -150,13 +246,19 @@ export const mainDropdownMenu = [
   { name: 'Responses', icon: 'clipboard list' },
   { name: 'Snippet', icon: 'cut' },
   { name: 'Drafts', icon: 'firstdraft' },
+  { name: 'Templates', icon: 'theme' },
   { name: 'Database', icon: 'database' },
   { name: 'statistic', icon: 'numbered list' },
   { name: 'logout', icon: 'log out' }
 ]
 
 export const textEditorDropdownMenu = [
-  { key: 'template', text: 'your greeting template', value: 'template', icon: 'theme' },
+  {
+    key: 'createNote',
+    text: 'create a note',
+    value: 'createNote',
+    icon: 'sticky note'
+  },
   {
     key: 'exportToDatabase',
     text: 'export to database',
@@ -169,6 +271,35 @@ export const textEditorDropdownMenu = [
     value: 'saveToDraft',
     icon: 'sticky note'
   },
-  { key: 'load', text: 'Load answer', value: 'load', icon: 'upload' },
-  { key: 'save', text: 'Save answer', value: 'save', icon: 'download' }
+  {
+    key: 'load',
+    text: 'Load answer',
+    value: 'load',
+    icon: 'upload'
+  },
+  {
+    key: 'save',
+    text: 'Save answer',
+    value: 'save',
+    icon: 'download'
+  }
+]
+
+export const template = [
+  {
+    id: uuid(),
+    content: 'hello',
+  },
+  {
+    id: uuid(),
+    content: 'goodbye',
+  },
+  {
+    id: uuid(),
+    content: 'ok',
+  },
+  {
+    id: uuid(),
+    content: 'fine',
+  }
 ]
