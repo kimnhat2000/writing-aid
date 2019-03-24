@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Icon, Popup, Input, TextArea, Form } from 'semantic-ui-react'
+import { Button, Input, TextArea, Form } from 'semantic-ui-react'
 
 const defaultState = {
   name: '',

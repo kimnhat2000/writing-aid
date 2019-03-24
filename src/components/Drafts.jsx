@@ -70,8 +70,8 @@ class Drafts extends React.Component {
     const draftRender =
       drafts &&
       drafts.map((draft, index) => (
-        <Segment key={index} className="title">
-          <Header as="h4" dividing>
+        <Segment key={index} className='title'>
+          <Header as='h4' dividing>
             <Header.Content onClick={() => this.showDrafts(draft.draftId)}>
               {draft.customer
                 ? `Draft in response for ${draft.customer} question`
@@ -79,21 +79,21 @@ class Drafts extends React.Component {
               <Header.Subheader>
                 <List horizontal>
                   <List.Item>
-                    <List.Icon name="linkify" />
+                    <List.Icon name='linkify' />
                     <a
                       href={`https://${draft.link}`}
-                      rel="noopener noreferrer"
-                      target="_blank"
+                      rel='noopener noreferrer'
+                      target='_blank'
                     >
                       {draft.link}
                     </a>
                   </List.Item>
                   <List.Item>
-                    <List.Icon name="calendar outline" />
+                    <List.Icon name='calendar outline' />
                     {draft.createdAt}
                   </List.Item>
                   <List.Item>
-                    <List.Icon name="clock outline" />
+                    <List.Icon name='clock outline' />
                     {draft.writingTime}
                   </List.Item>
                 </List>
@@ -101,11 +101,11 @@ class Drafts extends React.Component {
             </Header.Content>
             <p onClick={() => this.openQuestion(draft.draftId)}>
               {draft.question.open ? (
-                <span className="break-line">
+                <span className='break-line'>
                   {draft.question.questionContent}
                 </span>
               ) : (
-                <Icon name="question" />
+                <Icon name='question' />
               )}
             </p>
           </Header>
@@ -114,47 +114,47 @@ class Drafts extends React.Component {
               trigger={
                 <Container
                   onClick={() => this.onDraftClick(draft)}
-                  className="break-line"
+                  className='break-line'
                 >
                   {draft.draftContent} {index + 1} / {drafts.length}
                 </Container>
               }
-              content="copied"
-              on="click"
+              content='copied'
+              on='click'
               hideOnScroll
             />
           )}
           {draft.draftClick && (
             <Container>
               <Popup
-                trigger={<Icon name="check" color="green" />}
-                content="draft copied"
+                trigger={<Icon name='check' color='green' />}
+                content='draft copied'
               />
               <Popup
                 trigger={
                   <Icon
-                    name="edit"
-                    color={this.props.openDraftForm ? "grey" : "blue"}
+                    name='edit'
+                    color={this.props.openDraftForm ? 'grey' : 'blue'}
                     onClick={() => this.props.editDraftButtonClick(draft)}
                   />
                 }
-                content="edit this draft"
+                content='edit this draft'
               />
               <Popup
                 trigger={
                   <Icon
-                    name="delete"
-                    color="red"
+                    name='delete'
+                    color='red'
                     onClick={deleteOptionButtonClick}
                   />
                 }
-                content="delete this draft"
+                content='delete this draft'
               />
               {onConfirmShow && (
                 <Confirm
                   open={onConfirmShow}
-                  content="are you sure you want to delete this item?"
-                  cancelButton="Never mind"
+                  content='are you sure you want to delete this item?'
+                  cancelButton='Never mind'
                   confirmButton="Let's do it"
                   onCancel={() => cancelButton()}
                   onConfirm={() => this.onDeleteDraft(draft.draftId)}
@@ -163,7 +163,7 @@ class Drafts extends React.Component {
             </Container>
           )}
         </Segment>
-      ));
+      ))
     return <Container className='container-overflow'>{draftRender}</Container>
   }
 }

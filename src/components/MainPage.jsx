@@ -5,7 +5,6 @@ import uuid from 'uuid'
 
 import {
   dummyData,
-  mainDropdownMenu,
   dummyDraftData,
   dummyTemplateData,
   dummyDraftDataDefault
@@ -18,12 +17,21 @@ import QuestionRender from './Question'
 import Drafts from './Drafts'
 import DraftEditForm from './DraftEditForm'
 import Templates from './Templates'
+import Statistic from './Statistic'
 
 import Test from './Test'
 
 const today = new Date()
 const createdAt =
-  today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
+  today.getFullYear() +
+  '-' +
+  (today.getMonth() + 1) +
+  '-' +
+  today.getDate() +
+  '/' +
+  today.getHours() +
+  ':' +
+  today.getMinutes()
 
 class WritingAidMain extends React.Component {
   constructor (props) {
@@ -34,8 +42,7 @@ class WritingAidMain extends React.Component {
       onDeleteTitleShow: false,
       onConfirm: false,
       onFormOpen: false,
-      activeComponent: 'Drafts',
-      mainMenuItem: mainDropdownMenu,
+      activeComponent: 'drafts',
       optionToEdit: {},
       showTextEditor: true,
       drafts: dummyDraftData,
@@ -226,7 +233,6 @@ class WritingAidMain extends React.Component {
       onDeleteTitleShow,
       onFormOpen,
       activeComponent,
-      mainMenuItem,
       optionToEdit,
       drafts,
       openDraftForm,
@@ -248,7 +254,6 @@ class WritingAidMain extends React.Component {
                 activeComponent={name =>
                   this.setState({ activeComponent: name })
                 }
-                menuItems={mainMenuItem}
                 shownComponentName={this.state.activeComponent}
                 expandTitles={() =>
                   this.setState({
@@ -297,9 +302,9 @@ class WritingAidMain extends React.Component {
                 }
               />
 
-              {activeComponent === 'Public' && <Test />}
+              {activeComponent === 'public' && <Test />}
 
-              {activeComponent === 'Responses' && (
+              {activeComponent === 'responses' && (
                 <Responses
                   data={data}
                   onTitleClick={title => this.onTitleClick(title)}
@@ -327,7 +332,7 @@ class WritingAidMain extends React.Component {
                 />
               )}
 
-              {activeComponent === 'Drafts' && (
+              {activeComponent === 'drafts' && (
                 <Drafts
                   drafts={drafts}
                   openDraftForm={openDraftForm}
@@ -337,9 +342,12 @@ class WritingAidMain extends React.Component {
                   }
                   deleteDraftButtonConfirm={drafts => {
                     this.setState({
-                      drafts, onConfirmShow: false, onFormOpen: false,
+                      drafts,
+                      onConfirmShow: false,
+                      onFormOpen: false,
                       showTextEditor: true,
-                      openDraftForm: false})
+                      openDraftForm: false
+                    })
                   }}
                   cancelButton={() => this.setState({ onConfirmShow: false })}
                   onConfirmShow={onConfirmShow}
@@ -363,8 +371,12 @@ class WritingAidMain extends React.Component {
                 />
               )}
 
-              {activeComponent === 'Templates' && (
+              {activeComponent === 'templates' && (
                 <Templates templatesData={templatesData} />
+              )}
+
+              {activeComponent === 'statistic' && (
+                <Statistic/>
               )}
             </Segment>
             <QuestionRender

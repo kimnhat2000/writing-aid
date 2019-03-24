@@ -259,14 +259,14 @@ export const dummyDraftData = [
 ]
 
 export const mainDropdownMenu = [
-  { name: 'Public', icon: 'address book' },
-  { name: 'Responses', icon: 'clipboard list' },
-  { name: 'Snippet', icon: 'cut' },
-  { name: 'Drafts', icon: 'firstdraft' },
-  { name: 'Templates', icon: 'theme' },
-  { name: 'Database', icon: 'database' },
-  { name: 'statistic', icon: 'numbered list' },
-  { name: 'logout', icon: 'log out' }
+  { key: 'public', value: 1, text: 'Public', icon: 'address book' },
+  { key: 'responses', value: 2, text: 'Responses', icon: 'clipboard list' },
+  { key: 'snippet', value: 3, text: 'Snippet', icon: 'cut' },
+  { key: 'drafts', value: 4, text: 'Drafts', icon: 'firstdraft' },
+  { key: 'templates', value: 5, text: 'Templates', icon: 'theme' },
+  { key: 'database', value: 6, text: 'Database', icon: 'database' },
+  { key: 'statistic', value: 7, text: 'Statistic', icon: 'numbered list' },
+  { key: 'logout', value: 8, text: 'Logout', icon: 'log out' }
 ]
 
 export const textEditorDropdownMenu = [
@@ -323,4 +323,25 @@ export const dummyTemplateData = [
     purpose: 'purpose 4',
     content: 'fine'
   }
+]
+
+export const dummySnippetData = [
+  {shortcut: 'pw', title:'replace 1Password', content: '1Password', id:uuid()},
+  {shortcut: 'lr1', title:'lorem 1', content: 'Irure minim officia adipisicing sunt anim qui nulla dolore duis.', id:uuid()},
+  {shortcut: 'lr2', title:'lorem 2', content: 'Aute est incididunt aliquip et reprehenderit sit.', id:uuid()},
+]
+
+export const dummyStatisticData = [
+  {date: '23/03/2019', answer: 15, notes: 'none'},
+  {date: '23/03/2019', answer: 15, notes: 'none'},
+  {date: '23/03/2019', answer: 30, notes: 'none'},
+  {date: '23/03/2019', answer: 15, notes: 'none'},
+  {date: '23/03/2019', answer: 15, notes: 'none'},
+  {date: '23/03/2019', answer: 9, notes: 'none'},
+  {date: '23/03/2019', answer: 15, notes: 'none'},
+  {date: '23/03/2019', answer: 15, notes: 'none'},
+  {date: '23/03/2019', answer: 5, notes: 'none'},
+  {date: '23/03/2019', answer: 15, notes: 'none'},
+  {date: '23/03/2019', answer: 15, notes: 'none'},
+  {date: '23/03/2019', answer: 15, notes: 'none'},
 ]
