@@ -2,7 +2,6 @@ import React from 'react'
 import { Button } from 'semantic-ui-react'
 
 const defaultState = {
-  timer: null,
   second: 0,
   minute: 0,
   hour: 0,
@@ -26,6 +25,7 @@ class Timer extends React.Component {
         this.setState({ ...defaultState })
       }
     }}
+    
   startCounting = () => {
     clearInterval(this.state.timer)
     this.setState({
