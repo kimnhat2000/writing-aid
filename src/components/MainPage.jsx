@@ -42,7 +42,7 @@ class WritingAidMain extends React.Component {
       onDeleteTitleShow: false,
       onConfirm: false,
       onFormOpen: false,
-      activeComponent: 'public',
+      activeComponent: 'drafts',
       optionToEdit: {},
       showTextEditor: true,
       drafts: dummyDraftData,

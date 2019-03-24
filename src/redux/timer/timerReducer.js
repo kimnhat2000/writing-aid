@@ -1,12 +1,38 @@
-const timerReducerDefautState = {
+const timerReducerDefaultState = {
   second: 0,
   minute: 0,
   hour: 0,
-  start: false
+  start: false,
 }
 
-export const timerReducer
- = (state = timerReducerDefautState, action) => {
+const TextEditorReducerDefaultState = {
+  content: ''
+}
+
+export const textEditorAction = (content='') => ({
+  type: 'CONTENT_CHANGE',
+  content
+})
+
+
+export const textEditor = (state= TextEditorReducerDefaultState, action) => {
+  switch (action.type) {
+    case 'CONTENT_CHANGE':
+
+    return(
+      { ...state, content: action.content }
+    )
+    case 'CLEAR_CONTENT':
+    return(
+      { ...state, content: ''}
+    )
+    default:
+      return state;
+  }
+}
+
+export const timer
+ = (state = timerReducerDefaultState, action) => {
   switch (action.type) {
     case 'START_COUNTING':
       let {second, minute, hour} = state
@@ -23,7 +49,7 @@ export const timerReducer
       )
     case 'RESET':
       return {
-        ...timerReducerDefautState
+        ...timerReducerDefaultState
       }
     case 'PAUSE_RESUME':
       return {...state, start: !state.start}

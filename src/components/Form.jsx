@@ -22,7 +22,7 @@ class AppForm extends React.Component {
       submitCheck: titleToAddOptionTo.id || optionToEdit.id ? false : true,
       newTopic: {},
       cancelSubmit: false,
-      showPossibleMatchForm: !!titleToAddOptionTo
+      showPossibleMatchForm: titleToAddOptionTo
     }
   }
 

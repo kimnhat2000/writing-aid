@@ -1,8 +1,15 @@
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
 
-import { timerReducer } from './timer/timerReducer';
+import { timer, textEditor } from './timer/timerReducer';
+import {formReducer} from './formReducer/formReducer';
+
 
 export default () => {
-  const store = createStore(timerReducer);
+  const reducers = combineReducers({
+    timer,
+    textEditor,
+    formReducer
+  })
+  const store = createStore(reducers);
   return store;
 };

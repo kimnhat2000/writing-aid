@@ -1,82 +1,50 @@
 import React from 'react'
 import { Button } from 'semantic-ui-react'
+import { connect } from 'react-redux'
 
-const defaultState = {
-  second: 0,
-  minute: 0,
-  hour: 0,
-  start: false
-}
+let timer = null;
 
-class Timer extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { 
-      ...defaultState
-    }
+const Timer = ({count, reset, states, pauseResume}) => {
+  const {start, second, minute, hour} = states
+  if(!start){
+    clearInterval(timer)
   }
-
-  componentDidUpdate (prevProps, prevState) {
-    if(prevProps.record !== this.props.record){
-      const { second, minute, hour } = this.state
-      if(this.props.record){
-        clearInterval(this.state.timer)
-        this.props.recordTime(`${hour}:${minute}:${second}`);
-        this.setState({ ...defaultState })
-      }
-    }}
-    
-  startCounting = () => {
-    clearInterval(this.state.timer)
-    this.setState({
-      timer: setInterval(() => {
-        const { second, minute, hour } = this.state
-        this.setState({
-          second: second + 1
-        })
-        if (second === 59) {
-          this.setState({ second: 0, minute: minute + 1 })
-        }
-        if (minute === 59) {
-          this.setState({ second: 0, minute: 0, hour: hour + 1 })
-        }
+  const onStartandPause=()=>{
+    pauseResume();
+    if (!start) {
+      clearInterval(timer)
+      timer = setInterval(() => {
+        count()
       }, 1000)
-    })
+    } else {
+      clearInterval(timer)
+    };
   }
 
-  onReset = () => {
-    clearInterval(this.state.timer)
-    this.setState({ ...defaultState })
-  }
-
-  onStartandPause = () => {
-    const { start } = this.state
-    const test = !start
-    this.setState({ start: test }, ()=>{
-      if (!test) {
-        clearInterval(this.state.timer)
-      } else {
-        this.startCounting()
-      }
-    })
-  }
-
-  render () {
-    const { second, minute, hour, start } = this.state
-
-    return (
-      <Button.Group floated='right'>
-        {(start || second !== 0 || minute !== 0 || hour !== 0) && <Button icon='redo' onClick={this.onReset} />}
-        <Button disabled>
-          {hour} : <b>{minute}</b> : {second}
-        </Button>
-        <Button
-          icon={start ? 'pause' : 'play'}
-          onClick={this.onStartandPause}
-        />
-      </Button.Group>
-    )
-  }
+  return (
+    <Button.Group floated='right'>
+      {(start || second !== 0 || minute !== 0 || hour !== 0) && <Button icon='redo' onClick={()=>{clearInterval(timer); reset()}} />}
+      <Button disabled>
+        {hour} : <b>{minute}</b> : {second}
+      </Button>
+      <Button
+        icon={start ? 'pause' : 'play'}
+        onClick={()=>onStartandPause()}
+      />
+    </Button.Group>
+  )
 }
 
-export default Timer
+const mapDispatchToProps = dispatch =>
+  ({
+    count: () => dispatch({ type: 'START_COUNTING' }),
+    reset: () => dispatch({ type: 'RESET' }),
+    pauseResume: () => dispatch({ type: 'PAUSE_RESUME' })
+  })
+
+
+const mapStateToProps = ({timer}) => ({
+  states: timer
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Timer)
